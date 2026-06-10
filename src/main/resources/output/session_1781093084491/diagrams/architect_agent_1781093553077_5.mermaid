@@ -1,0 +1,30 @@
+flowchart TD
+    subgraph "Price Calculation Module"
+        direction TB
+        PCC[PriceChangeCommandConsumer] -->|"simulate path"| PS[PriceSimulator]
+        PCC -->|"apply path"| PCA[PriceChangeApplier]
+        
+        PS -->|"calculate proposed prices"| RCE[RateCalculationEngine]
+        PCA -->|"calculate actual prices"| RCE
+        
+        PS -->|"cache result"| SRC[SimulationResultCache]
+        PCA -->|"retrieve cached simulation"| SRC
+        
+        PCC -->|"validate"| PCV[PriceChangeValidator]
+        PCA --> PCV
+        
+        RCE -->|"fetch business rules"| RRR[RateRuleRepository]
+        
+        PCA -->|"persist changes"| PEP[PriceEventPublisher]
+        
+        RRR -->|"read/write rules"| DB[(PostgreSQL write_model)]
+        PCA -->|"write prices"| DB
+    end
+
+    subgraph "External Interfaces"
+        KAFKA_IN[(Kafka: price-change-commands)]
+        KAFKA_OUT[(Kafka: price-change-events)]
+    end
+
+    KAFKA_IN -->|"consume"| PCC
+    PEP -->|"publish"| KAFKA_OUT

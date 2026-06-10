@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: hotel-pricing-add
+
+  # =========================================================================
+  # GPT-5.4 via PPIO OpenAI-compatible API
+  # =========================================================================
+  # Set API key via environment variable: PPIO_API_KEY
+  # The TA will distribute keys during class
+  # =========================================================================
+  ai:
+    # DashScope key required by transitive dependency (unused; satisfied with same key)
+    dashscope:
+      api-key: ${PPIO_API_KEY:}
+    # GPT-5.4 via PPIO endpoint
+    openai:
+      api-key: ${PPIO_API_KEY:}
+      base-url: https://api.ppio.com/openai
+      chat:
+        options:
+          model: pa/gpt-5.4
+          temperature: 0.3
+          max-tokens: 16384
+
+# =========================================================================
+# Execution control
+# =========================================================================
+hotelpricing:
+  run-iterations: true
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.hotel.pricing: DEBUG
+    com.alibaba.cloud.ai.graph: DEBUG
+  file:
+    path: ./logs

@@ -1,0 +1,65 @@
+flowchart TD
+    subgraph "Application Layer"
+        GW[API Gateway\nMicrometer + Logback]
+        PCM[Price Calculation Module\nMicrometer + Logback]
+        QM[Query Module\nMicrometer + Logback]
+        CMP[Channel Mgmt Publisher\nMicrometer + Logback]
+        HMM[Hotel Management Module\nMicrometer + Logback]
+    end
+
+    subgraph "Infrastructure Layer"
+        K8S[Kubernetes\nkube-state-metrics\nnode_exporter]
+        KAFKA[Kafka\nJMX Exporter\nconsumer lag]
+        PG[PostgreSQL\npostgres_exporter]
+    end
+
+    subgraph "Metrics Collection"
+        PROM[Prometheus Server\nScrape interval: 15s]
+        PUSHGW[Push Gateway\nFor batch jobs]
+    end
+
+    subgraph "Log Collection"
+        LOG_AGENT[Fluentd / Promtail\nDaemonSet]
+        LOG_STORE[(Loki / Elasticsearch)]
+    end
+
+    subgraph "Visualization & Alerting"
+        GRAF[Grafana\nDashboards]
+        ALERT[Alertmanager\nAlerts]
+    end
+
+    subgraph "Key Dashboards"
+        D1["Price Publication Dashboard\nLatency, Success Rate, DLQ Count"]
+        D2["Query Performance Dashboard\nLatency, QPS, Error Rate"]
+        D3["System Health Dashboard\nCircuit Breaker States, Pod Status"]
+        D4["Kafka Dashboard\nConsumer Lag, Throughput"]
+    end
+
+    %% Metrics flow
+    GW -->|"/actuator/prometheus"| PROM
+    PCM -->|"/actuator/prometheus"| PROM
+    QM -->|"/actuator/prometheus"| PROM
+    CMP -->|"/actuator/prometheus"| PROM
+    HMM -->|"/actuator/prometheus"| PROM
+    K8S -->|"metrics"| PROM
+    KAFKA -->|"metrics"| PROM
+    PG -->|"metrics"| PROM
+    PCM -->|"outbox metrics"| PUSHGW
+    PUSHGW -->|"push"| PROM
+
+    %% Log flow
+    GW -->|"JSON logs"| LOG_AGENT
+    PCM -->|"JSON logs"| LOG_AGENT
+    QM -->|"JSON logs"| LOG_AGENT
+    CMP -->|"JSON logs"| LOG_AGENT
+    HMM -->|"JSON logs"| LOG_AGENT
+    LOG_AGENT --> LOG_STORE
+
+    %% Visualization
+    PROM --> GRAF
+    LOG_STORE --> GRAF
+    PROM --> ALERT
+    GRAF --> D1
+    GRAF --> D2
+    GRAF --> D3
+    GRAF --> D4

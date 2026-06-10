@@ -1,0 +1,53 @@
+flowchart TD
+    subgraph "Team A: Core Business Logic (3 devs)"
+        direction TB
+        DEV_A1[Developer A1\nLead: Price Calculation]
+        DEV_A2[Developer A2\nLead: Query Module]
+        DEV_A3[Developer A3\nLead: Hotel Management]
+        
+        subgraph "Module Ownership"
+            PCM[Price Calculation Module\nRateCalculationEngine\nOutbox Pattern\nSimulation]
+            QM[Query Module\nReadModelRepository\nReadModelProjector\nRead Replica]
+            HMM[Hotel Management Module\nHotelService\nRateDefinitionService\nUserPermissionService]
+        end
+        
+        DEV_A1 --> PCM
+        DEV_A2 --> QM
+        DEV_A3 --> HMM
+    end
+
+    subgraph "Team B: Infrastructure & Integration (3 devs)"
+        direction TB
+        DEV_B1[Developer B1\nLead: API Gateway + Angular]
+        DEV_B2[Developer B2\nLead: Channel Publisher + CI/CD]
+        DEV_B3[Developer B3\nLead: Infrastructure + Testing]
+        
+        subgraph "Module Ownership"
+            GW[API Gateway\nAuthFilter\nAuthorizationService\nProtocolAdapter\nRateLimiter]
+            SPA[Angular SPA\nUI Components\nState Management\nAPI Integration]
+            CMP[Channel Management Publisher\nRetryHandler\nDLQ\nIdempotency]
+            CICD[CI/CD Pipeline\nGitLab CI\nHelm Charts\nK8s Manifests]
+            INFRA[Infrastructure\nKafka\nPostgreSQL\nMonitoring\nExternal Secrets]
+            TEST[Test Infrastructure\nTestcontainers\nPact\nArchUnit\nWireMock]
+        end
+        
+        DEV_B1 --> GW
+        DEV_B1 --> SPA
+        DEV_B2 --> CMP
+        DEV_B2 --> CICD
+        DEV_B3 --> INFRA
+        DEV_B3 --> TEST
+    end
+
+    subgraph "Shared Responsibilities"
+        ADR[Architecture Decision Records\nAll team members]
+        CONTRACTS[API Contract Definition\nTeam A defines, Team B consumes]
+        INTEGRATION[Integration Testing\nBoth teams]
+    end
+
+    Team_A -->|"Defines API contracts"| CONTRACTS
+    Team_B -->|"Consumes API contracts"| CONTRACTS
+    Team_A --> INTEGRATION
+    Team_B --> INTEGRATION
+    Team_A --> ADR
+    Team_B --> ADR

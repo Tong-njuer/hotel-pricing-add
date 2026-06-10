@@ -1,0 +1,32 @@
+sequenceDiagram
+    actor User
+    participant SPA as Angular SPA
+    participant GW as API Gateway
+    participant QM as Query Module
+    participant DB as PostgreSQL (read_model schema)
+
+    User->>SPA: Navigate to price query page
+    SPA->>SPA: User selects hotel and date range
+    SPA->>GW: GET /api/prices?hotelId=X&fromDate=Y&toDate=Z
+    Note over GW: AuthFilter validates JWT
+    Note over GW: AuthorizationService checks user has access to hotel X
+    GW->>QM: Internal REST: GET /internal/prices?hotelId=X&fromDate=Y&toDate=Z
+    Note over QM: InternalQueryApi handles request
+    QM->>DB: SELECT * FROM read_model.materialized_prices WHERE hotel_id=X AND date BETWEEN Y AND Z
+    DB-->>QM: Price data rows
+    QM->>QM: Format response (group by rate type, room type)
+    QM-->>GW: JSON response with prices
+    GW-->>SPA: HTTP 200 with price data
+    SPA-->>User: Display prices in table/chart
+
+    Note over User,SPA: External API query (separate flow)
+    actor ExtSystem as External System
+    ExtSystem->>GW: GET /api/external/prices?hotelId=X&dates=Y&apiKey=Z
+    Note over GW: RateLimiter checks API key quota
+    Note over GW: AuthFilter validates API key
+    GW->>QM: Internal REST: GET /external/prices?hotelId=X&fromDate=Y&toDate=Z
+    Note over QM: ExternalQueryApi handles request
+    QM->>DB: SELECT * FROM read_model.materialized_prices WHERE hotel_id=X AND date=Y
+    DB-->>QM: Price data
+    QM-->>GW: JSON response
+    GW-->>ExtSystem: HTTP 200 with prices

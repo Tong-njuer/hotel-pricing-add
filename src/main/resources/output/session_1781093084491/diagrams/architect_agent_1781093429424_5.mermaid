@@ -1,0 +1,34 @@
+C4Deployment
+    title Deployment Diagram for Hotel Pricing System
+
+    Deployment_Node(cloud, "Cloud Provider", "Cloud infrastructure") {
+        Deployment_Node(k8s, "Kubernetes Cluster", "Container orchestration") {
+            Deployment_Node(spaPod, "Frontend Pod") {
+                Container(spa, "Angular SPA", "Served via Nginx")
+            }
+            Deployment_Node(gatewayPod, "API Gateway Pod") {
+                Container(gateway, "API Gateway", "Spring Boot")
+            }
+            Deployment_Node(priceCalcPod, "Price Calculation Pod") {
+                Container(priceCalc, "Price Calculation Module", "Spring Boot")
+            }
+            Deployment_Node(queryPod, "Query Module Pod") {
+                Container(queryMod, "Query Module", "Spring Boot")
+            }
+            Deployment_Node(hotelPod, "Hotel Management Pod") {
+                Container(hotelMgmt, "Hotel Management Module", "Spring Boot")
+            }
+            Deployment_Node(channelPubPod, "Channel Publisher Pod (post-MVP)") {
+                Container(channelPub, "Channel Management Publisher", "Spring Boot")
+            }
+        }
+        Deployment_Node(kafkaCluster, "Kafka Cluster", "Managed Kafka") {
+            Container(kafka, "Kafka Event Bus", "Topics: price-change-commands, price-change-events")
+        }
+        Deployment_Node(dbService, "Database Service", "Managed PostgreSQL") {
+            ContainerDb(db, "PostgreSQL Database", "Single instance: write_model schema + read_model schema")
+        }
+        Deployment_Node(idService, "Identity Service", "Cloud provider managed") {
+            Container(identity, "User Identity Service", "Authentication & authorization")
+        }
+    }

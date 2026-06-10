@@ -1,0 +1,80 @@
+C4Deployment
+    title Deployment Diagram — High Availability Architecture
+
+    Deployment_Node(cloud, "Cloud Provider", "Multi-zone Kubernetes cluster") {
+        Deployment_Node(zoneA, "Availability Zone A", "") {
+            Deployment_Node(k8sA, "Kubernetes Node Pool A", "") {
+                Deployment_Node(gwPodA, "API Gateway Pod (replica 1)", "") {
+                    Container(gw1, "API Gateway", "Spring Boot + Circuit Breakers + Health Checks")
+                }
+                Deployment_Node(qmPodA, "Query Module Pod (replica 1)", "") {
+                    Container(qm1, "Query Module", "Spring Boot + Circuit Breaker + Health Checks")
+                }
+                Deployment_Node(pcPodA, "Price Calculation Pod (replica 1)", "") {
+                    Container(pc1, "Price Calculation Module", "Spring Boot + Outbox Pattern")
+                }
+                Deployment_Node(cmPodA, "Channel Mgmt Publisher Pod (replica 1)", "") {
+                    Container(cmp1, "Channel Management Publisher", "Spring Boot + Retry + Circuit Breaker")
+                }
+            }
+        }
+        
+        Deployment_Node(zoneB, "Availability Zone B", "") {
+            Deployment_Node(k8sB, "Kubernetes Node Pool B", "") {
+                Deployment_Node(gwPodB, "API Gateway Pod (replica 2)", "") {
+                    Container(gw2, "API Gateway", "Spring Boot + Circuit Breakers + Health Checks")
+                }
+                Deployment_Node(qmPodB, "Query Module Pod (replica 2)", "") {
+                    Container(qm2, "Query Module", "Spring Boot + Circuit Breaker + Health Checks")
+                }
+                Deployment_Node(pcPodB, "Price Calculation Pod (replica 2)", "") {
+                    Container(pc2, "Price Calculation Module", "Spring Boot + Outbox Pattern")
+                }
+                Deployment_Node(cmPodB, "Channel Mgmt Publisher Pod (replica 2)", "") {
+                    Container(cmp2, "Channel Management Publisher", "Spring Boot + Retry + Circuit Breaker")
+                }
+            }
+        }
+
+        Deployment_Node(dbLayer, "Database Layer", "") {
+            Deployment_Node(primaryDB, "PostgreSQL Primary (Zone A)", "") {
+                ContainerDb(pgPrimary, "PostgreSQL Primary", "write_model schema\nHandles all writes")
+            }
+            Deployment_Node(replicaDB, "PostgreSQL Read Replica (Zone B)", "") {
+                ContainerDb(pgReplica, "PostgreSQL Read Replica", "read_model schema\nHandles all reads")
+            }
+            Container(patroni, "Patroni", "Automatic failover management")
+            Container(pgbouncer, "PgBouncer", "Connection pooling")
+        }
+
+        Deployment_Node(kafkaCluster, "Kafka Cluster (3 brokers, multi-zone)", "") {
+            Container(kafka, "Kafka", "Topics: price-change-commands, price-change-events, price-change-events-dlq")
+        }
+
+        Deployment_Node(monitoring, "Monitoring Stack", "") {
+            Container(prom, "Prometheus", "Metrics collection")
+            Container(graf, "Grafana", "Dashboards & alerting")
+            Container(pushgw, "Push Gateway", "Batch job metrics")
+            Container(logAgg, "Loki / Elasticsearch", "Log aggregation")
+        }
+    }
+
+    Rel(gw1, pgPrimary, "Auth/Authorization reads", "JDBC")
+    Rel(gw2, pgPrimary, "Auth/Authorization reads", "JDBC")
+    Rel(qm1, pgReplica, "Read queries", "JDBC (via PgBouncer)")
+    Rel(qm2, pgReplica, "Read queries", "JDBC (via PgBouncer)")
+    Rel(pc1, pgPrimary, "Write prices + outbox", "JDBC")
+    Rel(pc2, pgPrimary, "Write prices + outbox", "JDBC")
+    Rel(pgReplica, pgPrimary, "Async replication", "Streaming replication")
+    
+    Rel(gw1, kafka, "Publish commands", "Kafka producer")
+    Rel(pc1, kafka, "Publish events", "Kafka producer")
+    Rel(qm1, kafka, "Consume events", "Kafka consumer")
+    Rel(cmp1, kafka, "Consume events", "Kafka consumer")
+    
+    Rel(gw1, prom, "Scrape metrics", "HTTP")
+    Rel(qm1, prom, "Scrape metrics", "HTTP")
+    Rel(pc1, prom, "Scrape metrics", "HTTP")
+    Rel(cmp1, prom, "Scrape metrics", "HTTP")
+    Rel(pushgw, prom, "Push batch metrics", "HTTP")
+    Rel(prom, graf, "Query", "HTTP")

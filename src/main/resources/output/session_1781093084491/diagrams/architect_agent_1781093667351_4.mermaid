@@ -1,0 +1,57 @@
+sequenceDiagram
+    participant User
+    participant SPA as Angular SPA
+    participant GW as API Gateway
+    participant Kafka as Kafka
+    participant PCM as Price Calculation Module
+    participant DB as PostgreSQL
+    participant QM as Query Module
+    participant CMP as Channel Mgmt Publisher
+    participant CMS as Channel Mgmt System
+
+    Note over User,CMS: === PRICE CHANGE WITH OUTBOX PATTERN ===
+    User->>SPA: Confirm price change
+    SPA->>GW: POST /api/prices/apply
+    GW->>Kafka: Publish to price-change-commands
+    GW-->>SPA: HTTP 202 Accepted
+
+    Kafka->>PCM: Consume command
+    PCM->>PCM: PriceChangeApplier processes
+    PCM->>DB: BEGIN TRANSACTION
+    PCM->>DB: UPDATE prices SET ... (write_model)
+    PCM->>DB: INSERT INTO outbox (id, event_type, payload)
+    PCM->>DB: COMMIT
+    Note over PCM,DB: Atomic: both succeed or both fail
+
+    Note over PCM: OutboxPollingService (scheduled, 10ms interval)
+    PCM->>DB: SELECT * FROM outbox WHERE published_at IS NULL
+    DB-->>PCM: Unpublished events
+    PCM->>Kafka: Publish to price-change-events
+    PCM->>DB: UPDATE outbox SET published_at=NOW() WHERE id=...
+    Note over PCM: Event now in Kafka
+
+    Kafka->>QM: Consume price-change-events
+    QM->>QM: ReadModelProjector refreshes materialized view
+
+    Note over CMP,CMS: === CHANNEL MANAGEMENT PUSH WITH RETRY ===
+    Kafka->>CMP: Consume price-change-events
+    CMP->>CMP: IdempotencyChecker (check event ID)
+    CMP->>CMP: CircuitBreaker (check state)
+    Note over CMP: Circuit breaker CLOSED
+    CMP->>CMS: POST /api/channel/prices
+    CMS-->>CMP: HTTP 503 Service Unavailable
+    Note over CMP: Circuit breaker records failure
+
+    CMP->>CMP: RetryHandler: exponential backoff (1s)
+    Note over CMP: Wait 1 second
+    CMP->>CMS: POST /api/channel/prices (retry 1)
+    CMS-->>CMP: HTTP 503 Service Unavailable
+
+    CMP->>CMP: RetryHandler: exponential backoff (2s)
+    Note over CMP: Wait 2 seconds
+    CMP->>CMS: POST /api/channel/prices (retry 2)
+    CMS-->>CMP: HTTP 200 OK
+    Note over CMP: Event delivered successfully
+    CMP->>CMP: Acknowledge Kafka offset
+
+    Note over CMP: Circuit breaker records success → resets failure count

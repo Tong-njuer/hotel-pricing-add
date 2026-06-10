@@ -1,0 +1,36 @@
+sequenceDiagram
+    actor User
+    participant SPA as Angular SPA
+    participant GW as API Gateway
+    participant Kafka as Kafka Event Bus
+    participant PCM as Price Calculation Module
+    participant DB as PostgreSQL
+    participant QM as Query Module
+
+    User->>SPA: Change base rate for hotel/dates
+    SPA->>GW: POST /api/prices/change
+    Note over GW: Validate JWT, check authorization
+    GW->>GW: Generate tracking ID (UUID)
+    GW->>Kafka: Publish to "price-change-commands" (with tracking ID)
+    GW-->>SPA: HTTP 202 Accepted + tracking ID
+    SPA-->>User: "Price change submitted (ID: xxx)"
+
+    Note over SPA: Start polling status endpoint
+    SPA->>GW: GET /api/prices/change/xxx/status
+    GW-->>SPA: HTTP 200 { status: "processing" }
+
+    Note over Kafka,PCM: Asynchronous processing
+    PCM->>Kafka: Consume from "price-change-commands"
+    PCM->>PCM: Execute Rate Calculation Engine (HPS-5 rules)
+    PCM->>DB: Update write_model schema (same transaction)
+    PCM->>Kafka: Publish to "price-change-events" (with tracking ID)
+
+    Note over QM,DB: Read model update
+    QM->>Kafka: Consume from "price-change-events"
+    QM->>DB: Refresh materialized view in read_model schema
+    QM->>QM: Update status: "complete"
+
+    Note over SPA: Polling detects completion
+    SPA->>GW: GET /api/prices/change/xxx/status
+    GW-->>SPA: HTTP 200 { status: "complete" }
+    SPA-->>User: "Price change complete"
