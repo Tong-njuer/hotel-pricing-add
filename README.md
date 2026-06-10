@@ -11,6 +11,18 @@
 - **框架**: Spring AI Alibaba Agent Framework 1.1.2.2
 - **方法论**: Attribute-Driven Design (ADD) 3.0
 
+### 交付物与作业要求对照
+
+| 交付物 (50分) | 状态 | 对应文件 |
+|-------------|------|---------|
+| Source Code (15分) | ✅ | `Application.java`, `AgentConfig.java`, `PromptConstants.java`, `IterationRunner.java`, `ConversationLogger.java`, `pom.xml`, `application.yml` |
+| Conversation Log (15分) | ✅ | [`src/main/resources/output/session_*/conversation.log`](src/main/resources/output/session_1781093084491/conversation.log) (62.5KB, 含时间戳, 4迭代完整交互) |
+| Report (20分) | ✅ | [`ADD_3.0_Report_Hotel_Pricing_System.md`](ADD_3.0_Report_Hotel_Pricing_System.md) (英文, ADD Step 1-7 × 4 + 成本分析 + 个人反思) |
+
+**作业六大约束全部满足**：Mermaid 视图 ✅ · 无外部知识 ✅ · 无 few-shot ✅ · 无需求扩充 ✅ · 决策可追溯 ✅ · Agent 自验证 ✅
+
+> **conversation.log 位置**: 在 `src/main/resources/output/session_1781093084491/conversation.log`。该目录也包含 19 幅 Mermaid 架构图（`diagrams/` 子目录）。
+
 ## 快速开始
 
 ### 1. 前置条件
