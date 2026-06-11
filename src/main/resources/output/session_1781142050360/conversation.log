@@ -1,0 +1,1783 @@
+================================================================================
+ADD 3.0 Multi-Agent Conversation Log
+Session ID : session_1781142050360
+Started    : 2026-06-11T09:40:50.361+08:00
+Model      : GPT-5.4
+Paradigm   : Multi-Agent (Option 3 — Supervisor + Sub-Agent collaborative verification)
+Framework  : Spring AI Alibaba Agent Framework
+================================================================================
+
+
+######################################################################
+>>> ITERATION 1 BEGIN <<<
+Goal: Establishing an Overall System Structure
+######################################################################
+
+--- [2026-06-11T09:40:50.362+08:00] HUMAN_INPUT ---
+## Iteration 1: Establishing an Overall System Structure
+
+You are starting the ADD 3.0 process for the Hotel Pricing System.
+This is GREENFIELD development (complete replacement of existing system).
+
+Execute ALL seven ADD steps for this iteration.
+
+### Key Drivers for This Iteration
+Focus especially on:
+- CON-1 (web browser, cross-platform access)
+- CON-2 (cloud identity service, cloud hosting)
+- CON-5 (REST APIs initially, future protocol support)
+- CON-6 (cloud-native approach)
+- CRN-1 (establish overall initial system structure)
+- CRN-2 (leverage Java, Angular, Kafka knowledge)
+
+### Step 3 Guidance
+For greenfield development, start by establishing the system context.
+Select the system itself as the element to refine through decomposition.
+
+### Step 4 Guidance
+Choose design concepts for the overall architectural style (e.g.,
+layered architecture, microservices, event-driven, or a hybrid).
+
+### Expected Views
+Produce at minimum:
+1. A System Context diagram (C4 Level 1) — showing the system and
+   all external actors/systems
+2. A Container/Module Decomposition diagram — showing major subsystems
+   and their interfaces
+3. Document initial technology stack choices as design decisions
+
+### Output Requirements
+- ALL diagrams in Mermaid code blocks
+- ALL design decisions in the required format
+- Proceed step by step through ADD Steps 1-7
+
+--- END HUMAN_INPUT ---
+
+--- [2026-06-11T09:45:11.911+08:00] AGENT: architect_agent ---
+INPUT:
+## Iteration 1: Establishing an Overall System Structure
+
+You are starting the ADD 3.0 process for the Hotel Pricing System.
+This is GREENFIELD development (complete replacement of existing system).
+
+Execute ALL seven ADD steps for this iteration.
+
+### Key Drivers for This Iteration
+Focus especially on:
+- CON-1 (web browser, cross-platform access)
+- CON-2 (cloud identity service, cloud hosting)
+- CON-5 (REST APIs initially, future protocol support)
+- CON-6 (cloud-native approach)
+- CRN-1 (establish overall initial system structure)
+- CRN-2 (leverage Java, Angular, Kafka knowledge)
+
+### Step 3 Guidance
+For greenfield development, start by establishing the system context.
+Select the system itself as the element to refine through decomposition.
+
+### Step 4 Guidance
+Choose design concepts for the overall architectural style (e.g.,
+layered architecture, microservices, event-driven, or a hybrid).
+
+### Expected Views
+Produce at minimum:
+1. A System Context diagram (C4 Level 1) — showing the system and
+   all external actors/systems
+2. A Container/Module Decomposition diagram — showing major subsystems
+   and their interfaces
+3. Document initial technology stack choices as design decisions
+
+### Output Requirements
+- ALL diagrams in Mermaid code blocks
+- ALL design decisions in the required format
+- Proceed step by step through ADD Steps 1-7
+
+
+OUTPUT:
+# Iteration 1 — Establishing an Overall System Structure
+
+## Step 1 — Review Inputs and Identify Architectural Drivers
+
+For this iteration, I reviewed the provided use cases, quality attributes, concerns, and constraints, and identified the following **architectural drivers**.
+
+### Primary drivers for Iteration 1
+- **CRN-1** — Establish an overall initial system structure
+- **CON-1** — Users interact through a cross-platform web browser
+- **CON-2** — Use cloud provider identity service and host in the cloud
+- **CON-5** — Interact initially through REST APIs, but may later support other protocols
+- **CON-6** — Favor a cloud-native approach
+- **CRN-2** — Leverage team knowledge in Java, Angular, and Kafka
+
+### Secondary drivers that should influence the initial structure
+These are not the main focus of this iteration, but the structure should not block them:
+- **QA-5** — Security via cloud identity and authorization
+- **QA-6** — Add a non-REST query endpoint without changing core components
+- **QA-3** — 99.9% uptime for pricing queries
+- **QA-4** — Scale from 100,000 to 1,000,000 price queries/day
+- **QA-1** — Publish recalculated hotel prices ready for query in less than 100 ms
+- **QA-2** — 100% of price changes published successfully and received by Channel Management System
+- **QA-7** — Move between nonproduction environments with no code changes
+- **QA-8** — Measure 100% of price publication performance/reliability
+- **QA-9** — Support independent integration testing of all elements
+- **CON-4** — MVP demo in 2 months; initial release in 6 months
+- **CRN-4** — Avoid technical debt
+- **CRN-5** — Set up continuous deployment infrastructure
+- **CRN-3** — Allocate work to team members
+
+### Primary use cases relevant to initial structure
+- **HPS-1** — Log In
+- **HPS-2** — Change Prices
+- **HPS-3** — Query Prices
+- **HPS-4** — Manage Hotels
+- **HPS-5** — Manage Rates
+- **HPS-6** — Manage Users
+
+---
+
+## Step 2 — Establish the Iteration Goal by Selecting Drivers
+
+### Iteration Goal
+Establish a **top-level system structure** for the Hotel Pricing System that:
+- supports browser-based access,
+- integrates with cloud identity and cloud hosting,
+- uses REST initially while preserving protocol extensibility,
+- favors cloud-native deployment,
+- and leverages the team’s Java, Angular, and Kafka experience.
+
+### Driver subset selected for this iteration
+- **CRN-1**
+- **CON-1**
+- **CON-2**
+- **CON-5**
+- **CON-6**
+- **CRN-2**
+
+### Secondary considerations to avoid future rework
+- **QA-5**, **QA-6**, **QA-3**, **QA-4**, **QA-1**, **QA-2**, **QA-7**, **QA-8**, **QA-9**
+- **CON-4**, **CRN-4**, **CRN-5**
+
+---
+
+## Step 3 — Choose Element(s) to Refine
+
+### Element selected for refinement
+- **The Hotel Pricing System as a whole**
+
+### Justification
+This is **greenfield development**, and the instruction explicitly says to begin by establishing the **system context** and refining **the system itself** through decomposition. The top-level system decomposition is necessary to satisfy **CRN-1** and to make foundational choices for the web UI, cloud identity integration, API structure, and cloud-native deployment.
+
+---
+
+## Step 4 — Choose Design Concepts That Satisfy the Selected Drivers
+
+I considered three architectural style alternatives for the overall structure.
+
+### Alternative A — Layered modular monolith
+**Description**  
+A single deployable backend application with internal layers/modules, plus a separate Angular web frontend.
+
+**Evaluation against drivers**
+- **CON-1**: Supported with Angular SPA
+- **CON-2**: Can integrate with cloud identity and run in cloud
+- **CON-5**: REST can be supported, but future protocol extensibility is weaker unless carefully modularized
+- **CON-6**: Cloud-hosted yes, but cloud-native fit is weaker
+- **CRN-2**: Strong fit for Java and Angular; Kafka use is less natural
+- **CON-4**: Good for MVP speed
+- Risks:
+  - weaker fault isolation for **QA-3**
+  - weaker scaling isolation for **QA-4**
+  - risk of future coupling affecting **QA-6** and **CRN-4**
+
+### Alternative B — Fine-grained microservices with event-driven communication
+**Description**  
+Many independently deployable services from the start, with Kafka as a central backbone.
+
+**Evaluation against drivers**
+- **CON-6**: Strong cloud-native fit
+- **CON-5**: Good if APIs are separated
+- **CRN-2**: Leverages Java and Kafka strongly
+- Supports future scalability and isolation
+- Risks:
+  - high operational and design complexity
+  - could threaten **CON-4** MVP timeline
+  - may introduce accidental technical debt via premature distribution, conflicting with **CRN-4**
+
+### Alternative C — Hybrid modular service-based architecture with selective event-driven integration
+**Description**  
+An Angular SPA frontend; a small number of clearly separated backend services/modules organized around major responsibilities; REST at system edges; protocol-neutral application interfaces internally; Kafka used selectively for publication/integration rather than for all interactions.
+
+**Evaluation against drivers**
+- **CON-1**: Strong fit through browser SPA
+- **CON-2**: Strong fit through dedicated cloud identity integration and cloud deployment
+- **CON-5**: Strong fit through ports-and-adapters and REST-first edge APIs
+- **CON-6**: Strong fit through containerized cloud-native services
+- **CRN-2**: Strong fit through Angular, Java, Kafka
+- **CON-4**: Better balanced for MVP than fine-grained microservices
+- Better preserves future support for:
+  - **QA-6** via protocol-neutral core
+  - **QA-3/QA-4** via separable query path
+  - **QA-1/QA-2** via selective event-driven publication
+
+### Selected concept
+**Alternative C — Hybrid modular service-based architecture with selective event-driven integration**
+
+### Rationale
+It best satisfies the iteration drivers without overcommitting to premature granularity. It establishes a durable overall structure for **CRN-1**, supports cloud-native deployment per **CON-6**, aligns with cloud identity and hosting per **CON-2**, supports browser access per **CON-1**, keeps REST at the boundary while preserving future protocol support per **CON-5**, and leverages Java, Angular, and Kafka per **CRN-2**. It also reduces the risk of technical debt compared with either a tightly coupled monolith or an overly fragmented microservice design.
+
+---
+
+## Step 5 — Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
+
+## Top-level architectural elements
+
+### 1. Angular Web UI
+**Responsibilities**
+- Provide browser-based user interface for commercial and administrator users
+- Support login flow
+- Support price changes, simulations, price queries, hotel management, rate management, and user management
+- Call backend APIs over HTTP/REST
+
+**Interfaces**
+- HTTPS/REST to Backend API
+- Redirect/token-based interaction with Cloud Identity Service via backend-supported auth flow
+
+### 2. API Edge
+This is the system entry point for frontend and external API consumers.
+
+**Responsibilities**
+- Expose initial REST endpoints
+- Route requests to internal backend services
+- Keep external protocols separate from core logic
+- Support future addition of new protocols without changing core business components
+
+**Interfaces**
+- HTTPS/REST from Angular Web UI
+- HTTPS/REST from external systems querying prices
+- Internal service calls to Query Service, Pricing Service, Admin Services, Authorization component
+
+### 3. Identity and Authorization Integration
+**Responsibilities**
+- Integrate with the cloud provider identity service for authentication
+- Enforce that users only access functions/hotels they are authorized for
+- Provide authorization checks to backend services
+
+**Interfaces**
+- Integration to Cloud Identity Service
+- Authorization API for internal backend services
+
+### 4. Pricing Service
+**Responsibilities**
+- Handle HPS-2 Change Prices
+- Support simulation before applying changes
+- Recalculate dependent prices
+- Persist changed pricing state
+- Trigger publication for query readiness and Channel Management System integration
+
+**Interfaces**
+- REST/internal API from API Edge
+- Data access to Pricing Data Store
+- Event publication to Kafka/Event Backbone
+- Collaboration with Query-side publication store or price publication component
+
+### 5. Query Service
+**Responsibilities**
+- Handle HPS-3 Query Prices for users and external systems
+- Provide a dedicated query-oriented interface
+- Read published prices
+
+**Interfaces**
+- REST/internal API from API Edge
+- Data access to Query Read Store
+
+### 6. Hotel and Rate Administration Service
+**Responsibilities**
+- Handle HPS-4 Manage Hotels
+- Handle HPS-5 Manage Rates
+- Own administration of hotel metadata, tax rates, room types, available rates, and rate definitions
+
+**Interfaces**
+- REST/internal API from API Edge
+- Data access to Administration Data Store / shared domain persistence boundary
+
+### 7. User Access Administration Service
+**Responsibilities**
+- Handle HPS-6 Manage Users
+- Manage permissions for a given user consistent with cloud identity usage
+- Provide hotel/function authorization data to authorization logic
+
+**Interfaces**
+- REST/internal API from API Edge
+- Integration with cloud identity service where required by **CON-2**
+- Data access to authorization/permission persistence
+
+### 8. Publication and Integration Service
+**Responsibilities**
+- Consume pricing change/publication events
+- Push updated prices to the Channel Management System
+- Track publication status for monitoring
+
+**Interfaces**
+- Event consumption from Kafka/Event Backbone
+- REST integration to Channel Management System
+
+### 9. Kafka / Event Backbone
+**Responsibilities**
+- Decouple publication/integration from synchronous business flows
+- Carry pricing publication events and operational events
+- Support future observability and reliability tactics
+
+**Interfaces**
+- Event producers: Pricing Service
+- Event consumers: Publication and Integration Service, monitoring/observability components in later iterations
+
+### 10. Data Stores
+At this iteration, the stores are logical elements rather than finalized technology choices.
+
+**Responsibilities**
+- **Pricing Data Store**: authoritative pricing write-side persistence
+- **Query Read Store**: published prices available for query
+- **Administration Data Store**: hotels, rates, room types, tax and metadata
+- **Authorization/Permissions Store**: hotel/function permissions as needed
+
+**Interfaces**
+- Used by corresponding services through internal persistence interfaces
+
+---
+
+## Initial interfaces summary
+
+| Interface | From | To | Purpose |
+|---|---|---|---|
+| HTTPS/REST | Angular Web UI | API Edge | User operations |
+| HTTPS/REST | External Query Consumer | API Edge | Price query API |
+| Auth integration | Identity/Authorization Integration | Cloud Identity Service | Authentication and identity |
+| Internal API | API Edge | Query Service | Query requests |
+| Internal API | API Edge | Pricing Service | Change price/simulate |
+| Internal API | API Edge | Hotel and Rate Administration Service | Admin Hotels/Rates |
+| Internal API | API Edge | User Access Administration Service | Manage Users |
+| Authorization API | Backend Services | Identity/Authorization Integration | Access checks |
+| Persistence API | Pricing Service | Pricing Data Store | Pricing writes |
+| Persistence API | Query Service | Query Read Store | Pricing reads |
+| Persistence API | Admin Services | Admin/Permissions Stores | Admin data |
+| Event publish | Pricing Service | Kafka/Event Backbone | Publish pricing changes |
+| Event consume | Publication and Integration Service | Kafka/Event Backbone | Process price publication |
+| HTTPS/REST | Publication and Integration Service | Channel Management System | Push prices |
+
+---
+
+## Use case to element mapping
+
+| Use Case | Main Elements |
+|---|---|
+| **HPS-1 Log In** | Angular Web UI, API Edge, Identity and Authorization Integration, Cloud Identity Service |
+| **HPS-2 Change Prices** | Angular Web UI, API Edge, Pricing 
+... [truncated, original length=29806]
+--- END architect_agent ---
+  [Extracted 4 Mermaid diagram(s)]
+<<< ITERATION 1 END >>>
+
+######################################################################
+>>> ITERATION 2 BEGIN <<<
+Goal: Identifying Structures to Support Primary Functionality
+######################################################################
+
+--- [2026-06-11T09:45:11.933+08:00] HUMAN_INPUT ---
+## Iteration 2: Identifying Structures to Support Primary Functionality
+
+Building on Iteration 1's overall structure, now refine the internal
+architecture to support all six Use Cases.
+
+Execute ALL seven ADD steps for this iteration.
+
+### Key Drivers for This Iteration
+- All Use Cases: HPS-1 through HPS-6
+- QA-1: Price change publication < 100 ms
+- QA-4: 100K→1M queries/day scalability
+- QA-5: Authentication and authorization per user/hotel
+
+### Step 3 Guidance
+Select modules identified in Iteration 1 that participate in the
+primary use cases. Focus especially on the modules involved in:
+- Price change flow (HPS-2)
+- Price query flow (HPS-3)
+- Authentication flow (HPS-1)
+
+### Step 4 Guidance
+Design the internal component architecture for each selected module.
+Choose patterns for the price calculation engine and publishing pipeline.
+
+### Expected Views
+Produce at minimum:
+1. A Component-and-Connector view for the price change flow (HPS-2)
+2. A Sequence diagram for HPS-2 (Change Prices)
+3. A Sequence diagram for HPS-3 (Query Prices)
+4. A Use Case to Component mapping table
+
+### Output Requirements
+- ALL diagrams in Mermaid code blocks
+- Make sure to address the simulation requirement in HPS-2
+- Document how the Channel Management System integration works
+
+--- END HUMAN_INPUT ---
+
+--- [2026-06-11T09:49:49.304+08:00] AGENT: architect_agent ---
+INPUT:
+## Iteration 2: Identifying Structures to Support Primary Functionality
+
+Building on Iteration 1's overall structure, now refine the internal
+architecture to support all six Use Cases.
+
+Execute ALL seven ADD steps for this iteration.
+
+### Key Drivers for This Iteration
+- All Use Cases: HPS-1 through HPS-6
+- QA-1: Price change publication < 100 ms
+- QA-4: 100K→1M queries/day scalability
+- QA-5: Authentication and authorization per user/hotel
+
+### Step 3 Guidance
+Select modules identified in Iteration 1 that participate in the
+primary use cases. Focus especially on the modules involved in:
+- Price change flow (HPS-2)
+- Price query flow (HPS-3)
+- Authentication flow (HPS-1)
+
+### Step 4 Guidance
+Design the internal component architecture for each selected module.
+Choose patterns for the price calculation engine and publishing pipeline.
+
+### Expected Views
+Produce at minimum:
+1. A Component-and-Connector view for the price change flow (HPS-2)
+2. A Sequence diagram for HPS-2 (Change Prices)
+3. A Sequence diagram for HPS-3 (Query Prices)
+4. A Use Case to Component mapping table
+
+### Output Requirements
+- ALL diagrams in Mermaid code blocks
+- Make sure to address the simulation requirement in HPS-2
+- Document how the Channel Management System integration works
+
+
+OUTPUT:
+# Iteration 2 — Identifying Structures to Support Primary Functionality
+
+## Step 1 — Review Inputs and Identify Architectural Drivers
+
+In this iteration, I reviewed Iteration 1’s structure and selected the drivers most relevant to refining the architecture for the core use cases.
+
+### Primary drivers
+#### Use cases
+- **HPS-1** — Log In
+- **HPS-2** — Change Prices
+- **HPS-3** — Query Prices
+- **HPS-4** — Manage Hotels
+- **HPS-5** — Manage Rates
+- **HPS-6** — Manage Users
+
+#### Quality attributes
+- **QA-1** — After a base rate change, prices for all rates/room types for the hotel are published and ready for query in **< 100 ms**
+- **QA-4** — Scale from **100,000 to 1,000,000 queries/day** with average latency degradation ≤ 20%
+- **QA-5** — Authentication and authorization per user/hotel
+
+### Important supporting drivers
+- **CON-2** — Use cloud identity service and cloud hosting
+- **CON-5** — REST initially, future protocol support later
+- **CRN-1** — Establish coherent internal structure
+- **CRN-2** — Leverage Java, Angular, Kafka knowledge
+- **CRN-4** — Avoid technical debt
+- **QA-2** — Reliable publication to Channel Management System
+- **QA-6** — Future protocol extensibility
+- **QA-9** — Support integration testing independently of external systems
+
+### Iteration 1 elements selected as candidates for refinement
+From Iteration 1, the modules most involved in the primary flows are:
+- **API Edge**
+- **Identity and Authorization Integration**
+- **Pricing Service**
+- **Query Service**
+- **Hotel and Rate Administration Service**
+- **User Access Administration Service**
+- **Publication and Integration Service**
+- **Kafka / Event Backbone**
+- **Pricing Data Store**
+- **Query Read Store**
+- **Administration Data Store**
+- **Authorization / Permissions Store**
+
+---
+
+## Step 2 — Establish the Iteration Goal by Selecting Drivers
+
+### Iteration Goal
+Refine the internal architecture of the modules identified in Iteration 1 so the system can support **all six use cases**, with special focus on:
+- login/authentication/authorization,
+- price changes with simulation and publication,
+- scalable query handling.
+
+### Driver subset selected for this iteration
+Primary focus:
+- **HPS-1**
+- **HPS-2**
+- **HPS-3**
+- **HPS-4**
+- **HPS-5**
+- **HPS-6**
+- **QA-1**
+- **QA-4**
+- **QA-5**
+
+Secondary influence:
+- **QA-2**
+- **QA-6**
+- **QA-9**
+- **CON-2**
+- **CON-5**
+- **CRN-1**
+- **CRN-2**
+- **CRN-4**
+
+---
+
+## Step 3 — Choose One or More Elements of the System to Refine
+
+### Elements selected for refinement
+1. **Pricing Service**
+2. **Query Service**
+3. **Identity and Authorization Integration**
+4. **API Edge**
+5. **Publication and Integration Service**
+6. **Hotel and Rate Administration Service**
+7. **User Access Administration Service**
+
+### Justification
+These elements directly participate in the key flows identified in the guidance:
+
+- **Authentication flow (HPS-1)**  
+  Requires refinement of **API Edge**, **Identity and Authorization Integration**, and **User Access Administration Service**.
+
+- **Price change flow (HPS-2)**  
+  Requires refinement of **Pricing Service**, **Publication and Integration Service**, **Kafka**, and the pricing/query data stores.
+
+- **Price query flow (HPS-3)**  
+  Requires refinement of **Query Service**, **API Edge**, and authorization checks.
+
+- **Administration use cases (HPS-4, HPS-5, HPS-6)**  
+  Require refinement of **Hotel and Rate Administration Service** and **User Access Administration Service**, and their interaction with pricing and authorization logic.
+
+---
+
+## Step 4 — Choose Design Concepts That Satisfy the Selected Drivers
+
+## 4.1 Pricing Service internal architecture
+
+### Alternative A — Single internal component handling all pricing logic
+A single internal service component performs request handling, simulation, calculation, persistence, and publication triggering.
+
+**Pros**
+- simpler implementation
+- potentially fast for MVP
+
+**Cons**
+- higher coupling
+- weaker support for simulation/commit reuse
+- harder to test and evolve
+- more technical debt risk
+
+### Alternative B — Layered internal architecture with shared calculation core
+Pricing Service is decomposed into:
+- command facade,
+- simulation handler,
+- change orchestrator,
+- calculation engine,
+- publication coordinator,
+- repositories.
+
+**Pros**
+- simulation and commit share the same calculation core
+- cleaner separation of workflow vs calculation
+- stronger testability
+- lower technical debt risk
+- supports HPS-2 directly
+
+**Cons**
+- more design effort than a single component
+
+### Alternative C — Plugin-oriented calculation engine with pluggable rate-rule modules
+Rate calculation is built around a plugin/strategy architecture.
+
+**Pros**
+- strong future flexibility for HPS-5 Manage Rates
+
+**Cons**
+- more complexity than currently justified
+- higher initial delivery risk
+
+### Selected concept
+**Alternative B — Layered internal architecture with shared calculation core**
+
+### Rationale
+This gives the best balance between MVP feasibility and architectural quality. It supports the HPS-2 simulation requirement, allows reuse of calculation logic between simulation and commit paths, and reduces technical debt compared with a single undifferentiated component.
+
+---
+
+## 4.2 Publishing and query-readiness pipeline
+
+### Alternative A — Fully synchronous pipeline
+Pricing Service recalculates, updates query-ready data, and directly calls the Channel Management System before completing the request.
+
+**Pros**
+- simple control flow
+
+**Cons**
+- puts external REST dependency on the critical path
+- risky for QA-1 and QA-2
+- weak fault isolation
+
+### Alternative B — Fully asynchronous event-driven pipeline
+Pricing Service persists authoritative changes, then emits an event; read model and CMS integration both happen asynchronously from Kafka.
+
+**Pros**
+- strong decoupling
+- good for reliability and scaling
+
+**Cons**
+- query readiness depends on event-consumer lag
+- risky for QA-1 <100 ms
+
+### Alternative C — Hybrid pipeline
+Pricing Service commits the price change and updates the query-ready read model in the same application-level command flow, then records a durable outbound publication event for asynchronous Kafka publication to the Publication and Integration Service, which pushes to the Channel Management System.
+
+**Pros**
+- strongest support for query-ready <100 ms
+- external CMS latency is decoupled
+- still supports reliable asynchronous integration
+- supports scalable query path
+
+**Cons**
+- more coordination logic than either extreme
+
+### Selected concept
+**Alternative C — Hybrid pipeline**
+
+### Rationale
+This is the best fit for **QA-1**, **QA-4**, and **HPS-2**. It allows the changed prices to become queryable without waiting on Kafka consumer lag or the Channel Management System, while keeping external publication asynchronous.
+
+To reduce the reliability gap identified in review, this iteration also introduces a **durable publication record/outbox inside the Pricing Service boundary**. This ensures the committed pricing change and the fact that it must be published are recorded together.
+
+---
+
+## 4.3 Authorization enforcement placement
+
+### Alternative A — UI-only enforcement
+The Angular UI hides unauthorized options and backend trusts UI input.
+
+**Rejected**
+- insufficient for **QA-5**
+- does not protect external API use cases
+
+### Alternative B — API Edge only
+API Edge authenticates and authorizes all requests; internal services trust forwarded requests.
+
+**Pros**
+- centralized
+
+**Cons**
+- can over-centralize business rules
+- weak defense-in-depth
+
+### Alternative C — Defense-in-depth
+- API Edge validates token and performs coarse-grained route/function checks
+- Domain services perform resource-level checks, especially hotel-scoped authorization
+- Identity and Authorization Integration supplies authorization context
+
+### Selected concept
+**Alternative C — Defense-in-depth**
+
+### Rationale
+This best satisfies **QA-5** and supports both browser users and external API consumers. It avoids relying only on the UI or edge and keeps domain-specific authorization inside the services that own the business operations.
+
+---
+
+## Step 5 — Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
+
+# Refined internal architecture
+
+## 5.1 Pricing Service internal components
+
+### Pricing Command API
+**Responsibilities**
+- Receive requests for:
+  - simulate price change
+  - commit price change
+- validate command shape
+- invoke authorization checks
+- call orchestrator
+
+**Interfaces**
+- inbound internal API from API Edge
+- outbound calls to Authorization Policy component
+- outbound calls to Simulation Service / Price Change Orchestrator
+
+### Simulation Service
+**Responsibilities**
+- execute HPS-2 simulation path
+- call shared Calculation Engine
+- return calculated result without persisting changes
+- include rule/version context used for simulation
+
+**Interfaces**
+- invoked by Pricing Command API
+- uses Calculation Engine
+- reads required pricing/rate/hotel inputs
+
+### Price Change Orchestrator
+**Responsibilities**
+- execute committed price change workflow
+- coordinate retrieval of current data
+- invoke Calculation Engine
+- persist authoritative pricing changes
+- make prices query-ready
+- create durable publication record
+- trigger asynchronous publication
+
+**Interfaces**
+- invoked by Pricing Command API
+- uses Calculation Engine
+- writes to Pricing Repository
+- writes to Query Projection Writer
+- writes to Publication Outbox
+- emits publication events to Kafka through Outbox Publisher
+
+### Calculation Engine
+**Responsibilities**
+- calculate base/fixed/derived prices for selected hotel and dates
+- support recalculation of rates and room types
+- be shared by both simulation and commit paths
+- consume rate definitions and hotel metadata
+
+**Interfaces**
+- used by Simulation Service and Price Change Orchestrator
+- reads rate rules and hotel/rate metadata through internal ports
+
+### Pricing Repository
+**Responsibilities**
+- persist authoritative pricing state
+- retrieve current price inputs
+
+### Query Projection Writer
+**Responsibilities**
+- update query-ready price representation as part of committed change flow
+- ensure read path reflects committed pricing changes
+
+### Publication Outbox
+**Responsibilities**
+- durably record that a committed price change must be published downstream
+- persist publication status metadata for monitoring and reliability
+
+### Outbox Publisher
+**Responsibilities**
+- read pending outbox entries
+- publish events to Kafka
+- update outbox publication state
+
+---
+
+## 5.2 Query Service internal components
+
+### Query API
+**Responsibilities**
+- receive price query requests from API Edge
+- validate query parameters
+- invoke authorization checks
+- call Query Resolver
+
+### Query Resolver
+**Responsibilities**
+- resolve current published prices from the Query Read Store
+- support user UI queries and external query API
+- optimize reads through read-oriented data access
+
+### Query Repository
+**Responsibilities**
+- access the Query Read Store
+
+---
+
+## 5.3 Identity and Authorization Integration internal components
+
+### Authentication Adapter
+**Responsibilities**
+- integrate with Cloud Identity Service
+- validate credentials/tokens
+- return authenticated identity
+
+### Authorization Policy Service
+**Responsibilities**
+- evaluate user permissions for function and hotel scope
+- provide:
+  - coarse-grained route/function decisions to API Edge
+  - fine-grained hotel/resource decisions to domain services
+
+### Permission Repository
+**Responsibilities**
+- access user/function/hotel permissions managed by HPS-6
+
+---
+
+## 5.4 Hotel and Rate Administration Service internal components
+
+### Hotel Management Component
+**Responsibilities**
+- add/change/modify hotel information
+- maintain tax rates, room types, hotel metadata
+
+### Rate Management Component
+**Responsibilities**
+- add/change/modify rate definitions
+- manage business rules for rates
+- version current rules used by pricing calculations
+
+### A
+... [truncated, original length=36347]
+--- END architect_agent ---
+  [Extracted 5 Mermaid diagram(s)]
+<<< ITERATION 2 END >>>
+
+######################################################################
+>>> ITERATION 3 BEGIN <<<
+Goal: Addressing Reliability and Availability Quality Attributes
+######################################################################
+
+--- [2026-06-11T09:49:49.316+08:00] HUMAN_INPUT ---
+## Iteration 3: Addressing Reliability and Availability Quality Attributes
+
+Building on Iterations 1 and 2, now introduce structures to satisfy
+the reliability and availability quality attributes.
+
+Execute ALL seven ADD steps for this iteration.
+
+### Key Drivers for This Iteration
+- QA-2: 100% of price changes published successfully and received by
+  the Channel Management System
+- QA-3: 99.9% pricing queries uptime SLA
+- QA-8: 100% of performance/reliability measures collectable
+- Also consider QA-1 (performance) and QA-4 (scalability) interactions
+
+### Step 3 Guidance
+Select the following elements for refinement:
+- The price publishing pipeline (identified in Iteration 2)
+- The query API service
+- The Channel Management System integration point
+
+### Key Design Challenges
+1. Guaranteeing at-least-once delivery to Channel Management System
+2. Handling Channel Management System downtime without losing price changes
+3. Meeting 99.9% availability with cloud-native patterns
+4. Collecting metrics without impacting performance
+
+### Expected Views
+Produce at minimum:
+1. An updated Component & Connector view showing reliability mechanisms
+   (message queues, retry logic, circuit breakers)
+2. A Deployment diagram showing redundancy and failover
+3. A Monitoring architecture diagram showing metric collection points
+
+### Output Requirements
+- ALL diagrams in Mermaid code blocks
+- For each reliability mechanism, record a design decision
+- Ensure QA-2 (100% reliability) and QA-3 (99.9% availability) are
+  explicitly addressed with concrete architectural elements
+
+--- END HUMAN_INPUT ---
+
+--- [2026-06-11T09:53:29.064+08:00] AGENT: architect_agent ---
+INPUT:
+## Iteration 3: Addressing Reliability and Availability Quality Attributes
+
+Building on Iterations 1 and 2, now introduce structures to satisfy
+the reliability and availability quality attributes.
+
+Execute ALL seven ADD steps for this iteration.
+
+### Key Drivers for This Iteration
+- QA-2: 100% of price changes published successfully and received by
+  the Channel Management System
+- QA-3: 99.9% pricing queries uptime SLA
+- QA-8: 100% of performance/reliability measures collectable
+- Also consider QA-1 (performance) and QA-4 (scalability) interactions
+
+### Step 3 Guidance
+Select the following elements for refinement:
+- The price publishing pipeline (identified in Iteration 2)
+- The query API service
+- The Channel Management System integration point
+
+### Key Design Challenges
+1. Guaranteeing at-least-once delivery to Channel Management System
+2. Handling Channel Management System downtime without losing price changes
+3. Meeting 99.9% availability with cloud-native patterns
+4. Collecting metrics without impacting performance
+
+### Expected Views
+Produce at minimum:
+1. An updated Component & Connector view showing reliability mechanisms
+   (message queues, retry logic, circuit breakers)
+2. A Deployment diagram showing redundancy and failover
+3. A Monitoring architecture diagram showing metric collection points
+
+### Output Requirements
+- ALL diagrams in Mermaid code blocks
+- For each reliability mechanism, record a design decision
+- Ensure QA-2 (100% reliability) and QA-3 (99.9% availability) are
+  explicitly addressed with concrete architectural elements
+
+
+OUTPUT:
+# Iteration 3 — Addressing Reliability and Availability Quality Attributes
+
+## Step 1 — Review Inputs and Identify Architectural Drivers
+
+For this iteration, I reviewed the prior iterations and selected the drivers focused on reliability, availability, and monitorability.
+
+### Primary drivers
+- **QA-2** — 100% of price changes are published successfully and also received by the Channel Management System
+- **QA-3** — Pricing queries uptime SLA must be **99.9%** outside maintenance windows
+- **QA-8** — The system must provide a mechanism that allows **100%** of price publication performance and reliability measures to be collected as needed
+
+### Secondary interacting drivers
+- **QA-1** — Price changes must be published and ready for query in **< 100 ms**
+- **QA-4** — Scale price queries from **100,000 to 1,000,000/day**
+- **QA-5** — Secure access must remain enforced
+- **QA-7** — Environment portability without code changes
+- **QA-9** — Independent integration testing support
+- **CON-2** — Cloud identity service and cloud hosting
+- **CON-5** — REST initially, future protocol support possible
+- **CON-6** — Favor cloud-native approach
+- **CRN-1** — Maintain coherent architecture structure
+- **CRN-2** — Leverage Java, Angular, Kafka knowledge
+- **CRN-4** — Avoid technical debt
+- **CRN-5** — Support continuous deployment infrastructure
+
+### Refined elements from prior iterations relevant here
+Per the iteration guidance:
+- **Price publishing pipeline**
+- **Query API service**
+- **Channel Management System integration point**
+
+More specifically, from Iteration 2:
+- **Publication Outbox**
+- **Outbox Publisher**
+- **Kafka / Event Backbone**
+- **Price Publication Consumer**
+- **CMS Adapter**
+- **Delivery Tracker**
+- **Query API / Query Resolver / Query Repository**
+- **Query Read Store**
+- **API Edge**
+
+---
+
+## Step 2 — Establish the Iteration Goal by Selecting Drivers
+
+### Iteration Goal
+Refine the architecture so that:
+1. price changes are not lost and are eventually delivered to the Channel Management System,
+2. the query path remains highly available and isolated from integration failures,
+3. publication performance and reliability metrics are fully observable,
+4. reliability mechanisms do not unnecessarily undermine query performance or scalability.
+
+### Driver subset selected for this iteration
+Primary:
+- **QA-2**
+- **QA-3**
+- **QA-8**
+
+Secondary:
+- **QA-1**
+- **QA-4**
+- **CON-6**
+- **CRN-1**
+- **CRN-2**
+- **CRN-4**
+- **QA-7**
+- **QA-9**
+
+---
+
+## Step 3 — Choose One or More Elements of the System to Refine
+
+### Elements selected for refinement
+1. **Price publishing pipeline**
+   - Publication Outbox
+   - Outbox Publisher
+   - Kafka / Event Backbone
+   - Price Publication Consumer
+   - CMS Adapter
+   - Delivery Tracker
+   - Reconciliation Worker
+
+2. **Query API service**
+   - Query API
+   - Query Resolver
+   - Query Repository
+   - Query Read Store
+   - API Edge routing to Query Service
+
+3. **Channel Management System integration point**
+   - CMS Adapter
+   - retry mechanisms
+   - circuit breaker
+   - delivery-state tracking
+
+### Justification
+These are the elements directly involved in the iteration’s primary quality attributes:
+
+- **QA-2** depends on reliable publication capture, durable handoff, retry, and confirmation of downstream receipt.
+- **QA-3** depends on query-path redundancy, isolation, and failure handling.
+- **QA-8** depends on complete publication lifecycle tracking and health/metrics collection across the pipeline.
+
+---
+
+## Step 4 — Choose Design Concepts That Satisfy the Selected Drivers
+
+## 4.1 Publishing pipeline reliability
+
+### Alternative A — Synchronous end-to-end publication to CMS
+The Pricing Service waits for CMS delivery confirmation before completing publication.
+
+**Pros**
+- simple success model
+
+**Cons**
+- weak fit for **QA-1**
+- external CMS latency becomes part of core flow
+- lower resilience
+- harms availability isolation
+
+### Alternative B — Kafka-only asynchronous pipeline without durable outbox/reconciliation
+Publish to Kafka after commit and rely on retries in consumers.
+
+**Pros**
+- simpler than a full tracked pipeline
+- leverages Kafka
+
+**Cons**
+- weaker protection against loss between commit and publish
+- weaker auditability
+- insufficient confidence for **QA-2** and **QA-8**
+
+### Alternative C — Durable multi-stage pipeline with outbox, retries, lifecycle tracking, and reconciliation
+Accepted price changes create a durable publication record. Publication is retried to Kafka, delivered through an idempotent consumer and isolated CMS Adapter, tracked in a durable Delivery Tracker, and healed by reconciliation if needed.
+
+**Pros**
+- strongest support for **QA-2**
+- strongest support for **QA-8**
+- keeps CMS off the synchronous pricing path, helping **QA-1**
+- aligns with existing architecture and Kafka knowledge
+
+**Cons**
+- more components and lifecycle coordination
+
+### Selected concept
+**Alternative C — Durable multi-stage pipeline with outbox, retries, lifecycle tracking, and reconciliation**
+
+### Rationale
+This is the strongest design for meeting the reliability objective while preserving decoupling and observability. It uses the existing architectural direction rather than replacing it and avoids coupling the whole system to the availability of the CMS.
+
+---
+
+## 4.2 Query availability
+
+### Alternative A — Single Query Service instance with health monitoring
+Simple deployment with monitoring and restart.
+
+**Cons**
+- single point of failure
+- weak fit for **QA-3**
+
+### Alternative B — Stateless query replicas with health-based routing and HA read store
+Multiple Query Service instances behind API Edge, with readiness/liveness checks and a highly available read store.
+
+**Pros**
+- strongest direct support for **QA-3**
+- scales well for **QA-4**
+- preserves query-path isolation
+
+### Alternative C — Query replicas only, but shared non-HA read store
+Removes service-level SPOF but leaves data-level SPOF.
+
+**Cons**
+- still weak for **QA-3**
+
+### Selected concept
+**Alternative B — Stateless query replicas with health-based routing and HA read store**
+
+### Rationale
+This directly supports 99.9% uptime and also reinforces scalability. The query path remains isolated from pricing publication and CMS failures.
+
+---
+
+## 4.3 CMS integration resilience
+
+### Alternative A — CMS calls embedded in Price Publication Consumer
+Simpler structure, but coupled.
+
+### Alternative B — Dedicated CMS Adapter with retry and circuit breaker
+External integration is isolated behind an adapter; failed calls are retried and protected by a circuit breaker; durable tracking ensures work is not lost.
+
+### Alternative C — Reconciliation-only recovery with minimal immediate retry
+Simpler runtime behavior but slower recovery.
+
+### Selected concept
+**Alternative B — Dedicated CMS Adapter with retry and circuit breaker**
+
+### Rationale
+The CMS is the most failure-prone external boundary in this iteration. Isolating it behind a dedicated adapter with explicit resilience mechanisms minimizes blast radius while preserving eventual delivery.
+
+---
+
+## Step 5 — Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
+
+# Refined reliability and availability architecture
+
+## 5.1 Price publishing pipeline elements
+
+### Publication Outbox
+**Responsibilities**
+- durably record publication intent for every committed price change
+- store correlation ID, publication key, and lifecycle status
+- serve as the authoritative source of pending outbound work
+
+**Interfaces**
+- written by Price Change Orchestrator
+- read by Outbox Publisher
+- updated with publisher handoff state
+
+### Outbox Publisher
+**Responsibilities**
+- scan/read pending outbox entries
+- publish events to Kafka with retry
+- mark publication-dispatch state in outbox
+- never discard pending events on transient failure
+
+**Interfaces**
+- reads/writes Publication Outbox
+- publishes to Kafka
+
+### Kafka / Event Backbone
+**Responsibilities**
+- durable asynchronous handoff from pricing side to publication side
+- buffer publication work during transient consumer or CMS failures
+
+### Price Publication Consumer
+**Responsibilities**
+- consume publication events from Kafka
+- perform idempotent processing using publication key/correlation ID
+- invoke Delivery Tracker state transitions
+- invoke CMS Adapter
+
+**Interfaces**
+- consumes from Kafka
+- writes Delivery Tracker
+- calls CMS Adapter
+
+### CMS Adapter
+**Responsibilities**
+- call the Channel Management System over REST
+- attach correlation/idempotency data
+- apply retry policy
+- apply circuit breaker to avoid resource exhaustion during CMS outages
+- report outcome to Delivery Tracker
+
+**Interfaces**
+- invoked by Price Publication Consumer
+- REST to Channel Management System
+- writes Delivery Tracker
+
+### Delivery Tracker
+**Responsibilities**
+- durably record end-to-end publication lifecycle states
+- preserve timestamps for every significant state transition
+- support monitoring, audit, and reconciliation
+- define success criteria for delivery
+
+**Lifecycle states**
+- `OUTBOX_CREATED`
+- `OUTBOX_DISPATCH_PENDING`
+- `KAFKA_PUBLISHED`
+- `CONSUMER_RECEIVED`
+- `CMS_SEND_ATTEMPTED`
+- `CMS_ACK_RECEIVED`
+- `FAILED_RETRYABLE`
+- `RECONCILIATION_REQUIRED`
+- `COMPLETED`
+
+### Reconciliation Worker
+**Responsibilities**
+- periodically compare committed publication intent against actual downstream delivery state
+- detect stuck or missing deliveries
+- re-drive publication where required
+- ensure circuit-breaker-open situations do not discard work
+
+**Interfaces**
+- reads Publication Outbox
+- reads/writes Delivery Tracker
+- can requeue/re-drive publication through Kafka or pending state
+
+---
+
+## 5.2 Query availability elements
+
+### Query API / Query Resolver / Query Repository
+**Responsibilities**
+- remain stateless
+- serve queries only from the Query Read Store
+- avoid dependencies on CMS interaction and publishing workflow
+
+### Query Service Replicas
+**Responsibilities**
+- provide redundant instances for query traffic
+- expose readiness and liveness health states
+- support horizontal scaling
+
+### API Edge health-based routing
+**Responsibilities**
+- route query traffic only to healthy Query Service instances
+- remove unhealthy instances from active routing
+
+### HA Query Read Store
+**Responsibilities**
+- provide highly available query data source
+- support failover/redundancy
+- remain independent from CMS availability
+
+### Degraded-read policy
+**Responsibilities**
+- continue serving the last durable query-ready prices even when CMS publication is impaired
+- keep query availability isolated from publication outage conditions
+
+---
+
+## 5.3 Monitoring and observability elements
+
+### Correlation ID propagation
+**Responsibilities**
+- provide a single identifier per price change/publication flow
+- connect:
+  - price commit
+  - outbox record
+  - Kafka event
+  - consumer processing
+  - CMS attempt
+  - CMS acknowledgment
+  - reconciliation action
+
+### Publication Metrics Collector
+**Responsibilities**
+- derive performance and reliability metrics from durable state transitions
+- compute end-to-end timings:
+  - commit-to-outbox
+  - outbox-to-kafka
+  - kafka-to-consumer
+  - consumer-to-cms-attempt
+  - cms-attempt-to-ack
+  - full publication completion
+
+### Health and SLA Probes
+**Responsibilities**
+- monitor Query API availability through active probes
+- monitor readiness/liveness of Query Service instances
+- monitor CMS Adapter health and breaker state
+- monitor backlog/stuck delivery counts in outbox/tracker
+
+### Operational Monitoring Store / Dashboard boundary
+**Responsibilities**
+- store collected measures and health summaries for operators
+- support QA-8 reporting without using sampled-only data as the sole source of truth
+
+---
+
+## 5.4 Reliability semantics clarification
+
+### Definition of “ready for query”
+For this architecture, to reconcile **QA-1** and **QA-2**:
+
+- **Query-ready publication** means the changed prices are committed and present in the query-ready store for HPS-3.
+- **CMS delive
+... [truncated, original length=31730]
+--- END architect_agent ---
+  [Extracted 5 Mermaid diagram(s)]
+<<< ITERATION 3 END >>>
+
+######################################################################
+>>> ITERATION 4 BEGIN <<<
+Goal: Addressing Development and Operations
+######################################################################
+
+--- [2026-06-11T09:53:29.070+08:00] HUMAN_INPUT ---
+## Iteration 4: Addressing Development and Operations
+
+Building on Iterations 1-3, now introduce structures for modifiability,
+deployability, testability, and establish the CI/CD pipeline.
+
+Execute ALL seven ADD steps for this iteration.
+
+### Key Drivers for This Iteration
+- QA-6: Support gRPC endpoint without changing core components
+- QA-7: Move between nonproduction environments without code changes
+- QA-9: 100% of elements support independent integration testing
+- CRN-3: Allocate work to development team members
+- CRN-4: Avoid introducing technical debt
+- CRN-5: Set up continuous deployment infrastructure
+- Also consider CON-3 (proprietary Git platform) and CON-4 (6-month delivery)
+
+### Step 3 Guidance
+Select:
+- The API layer (for gRPC addition)
+- The deployment configuration
+- The testing boundaries between system elements
+
+### Expected Views
+Produce at minimum:
+1. A Layered Architecture diagram showing how gRPC addition is isolated
+   from core components (addressing QA-6)
+2. A CI/CD Pipeline diagram (Mermaid flowchart)
+3. A Work Allocation view — which development sub-team owns which module
+4. A Testability diagram showing test boundaries and test doubles
+
+### Output Requirements
+- ALL diagrams in Mermaid code blocks
+- For CRN-3, explicitly state which team member/group handles each module
+- For QA-9, explicitly show how each element can be tested independently
+- Address CON-4 by showing how the 2-month MVP scope is achieved
+
+--- END HUMAN_INPUT ---
+
+--- [2026-06-11T09:56:28.483+08:00] AGENT: architect_agent ---
+INPUT:
+## Iteration 4: Addressing Development and Operations
+
+Building on Iterations 1-3, now introduce structures for modifiability,
+deployability, testability, and establish the CI/CD pipeline.
+
+Execute ALL seven ADD steps for this iteration.
+
+### Key Drivers for This Iteration
+- QA-6: Support gRPC endpoint without changing core components
+- QA-7: Move between nonproduction environments without code changes
+- QA-9: 100% of elements support independent integration testing
+- CRN-3: Allocate work to development team members
+- CRN-4: Avoid introducing technical debt
+- CRN-5: Set up continuous deployment infrastructure
+- Also consider CON-3 (proprietary Git platform) and CON-4 (6-month delivery)
+
+### Step 3 Guidance
+Select:
+- The API layer (for gRPC addition)
+- The deployment configuration
+- The testing boundaries between system elements
+
+### Expected Views
+Produce at minimum:
+1. A Layered Architecture diagram showing how gRPC addition is isolated
+   from core components (addressing QA-6)
+2. A CI/CD Pipeline diagram (Mermaid flowchart)
+3. A Work Allocation view — which development sub-team owns which module
+4. A Testability diagram showing test boundaries and test doubles
+
+### Output Requirements
+- ALL diagrams in Mermaid code blocks
+- For CRN-3, explicitly state which team member/group handles each module
+- For QA-9, explicitly show how each element can be tested independently
+- Address CON-4 by showing how the 2-month MVP scope is achieved
+
+
+OUTPUT:
+# Iteration 4 — Addressing Development and Operations
+
+## Step 1 — Review Inputs and Identify Architectural Drivers
+
+For this iteration, I reviewed the prior architecture and selected the development and operations drivers.
+
+### Primary drivers
+- **QA-6** — Add a non-REST query endpoint (for example gRPC) without changing core components
+- **QA-7** — Move the application between nonproduction environments with no code changes
+- **QA-9** — 100% of the system and its elements support independent integration testing
+- **CRN-3** — Allocate work to development team members
+- **CRN-4** — Avoid introducing technical debt
+- **CRN-5** — Set up a continuous deployment infrastructure
+
+### Important constraints and concerns influencing this iteration
+- **CON-3** — Code must be hosted on the proprietary Git-based platform already used in the company
+- **CON-4** — MVP demo in at most 2 months; full initial release in 6 months
+- **CON-5** — REST initially, other protocols may be needed later
+- **CON-6** — Favor cloud-native approach
+- **CRN-2** — Leverage Java, Angular, Kafka knowledge
+
+### Existing architectural elements most relevant here
+From prior iterations:
+- **API Edge**
+- **Query Service**
+- **Pricing Service**
+- **Hotel and Rate Administration Service**
+- **User Access Administration Service**
+- **Identity and Authorization Integration**
+- **Publication and Integration Service**
+- **Angular Web UI**
+- **Kafka / Event Backbone**
+- **Cloud deployment structure**
+- **Reliability/availability monitoring boundary**
+
+---
+
+## Step 2 — Establish the Iteration Goal by Selecting Drivers
+
+### Iteration Goal
+Refine the architecture to support:
+1. protocol extensibility without core changes,
+2. cloud-native deployability across environments without code changes,
+3. independent integration testing of all elements,
+4. work allocation for the development organization,
+5. CI/CD setup consistent with the existing Git platform and delivery timeline.
+
+### Driver subset selected for this iteration
+Primary:
+- **QA-6**
+- **QA-7**
+- **QA-9**
+- **CRN-3**
+- **CRN-4**
+- **CRN-5**
+
+Secondary:
+- **CON-3**
+- **CON-4**
+- **CON-5**
+- **CON-6**
+- **CRN-2**
+
+---
+
+## Step 3 — Choose One or More Elements of the System to Refine
+
+### Elements selected for refinement
+1. **The API layer**
+   - to isolate REST now and gRPC later from core components
+
+2. **Deployment configuration and CI/CD structure**
+   - to support environment portability and continuous deployment
+
+3. **Testing boundaries between architectural elements**
+   - to ensure every element can be integration-tested independently
+
+4. **Module ownership / work allocation structure**
+   - to support team organization and MVP-first delivery
+
+### Justification
+These elements directly satisfy the selected guidance:
+- API layer → **QA-6**
+- deployment configuration → **QA-7**, **CRN-5**
+- test boundaries → **QA-9**
+- work allocation → **CRN-3**, **CON-4**
+
+---
+
+## Step 4 — Choose Design Concepts That Satisfy the Selected Drivers
+
+## 4.1 API layer structure for future gRPC support
+
+### Alternative A — Protocol-specific adapters over stable application service interfaces
+REST adapters call transport-neutral application service interfaces now; later a gRPC adapter is added against the same interfaces.
+
+**Pros**
+- strongest fit for **QA-6**
+- aligns with **CON-5**
+- avoids protocol leakage into core logic
+- limits technical debt
+
+**Cons**
+- requires disciplined boundaries
+
+### Alternative B — Gateway-level protocol translation
+Add gRPC later by translating gRPC into REST at the edge.
+
+**Pros**
+- quick short-term path
+
+**Cons**
+- risks coupling protocol conversion to REST contracts
+- can make the edge a bottleneck
+- weaker long-term modifiability
+
+### Alternative C — Separate REST façade and gRPC façade services
+Different façade services orchestrate backend calls independently.
+
+**Pros**
+- clear external separation
+
+**Cons**
+- duplicates orchestration
+- higher maintenance cost
+- greater technical debt risk
+
+### Selected concept
+**Alternative A — Protocol-specific adapters over stable application service interfaces**
+
+### Rationale
+This most directly satisfies **QA-6** and **CON-5** while minimizing technical debt (**CRN-4**). It allows REST delivery now for the MVP and keeps the path open for future gRPC without changing the core components.
+
+---
+
+## 4.2 Deployment and CI/CD structure
+
+### Alternative A — Externalized environment configuration with pipeline-driven deployment
+Same build artifact is promoted through nonproduction environments; environment-specific settings are injected at deploy time.
+
+**Pros**
+- strongest fit for **QA-7**
+- aligns with **CRN-5**
+- compatible with **CON-3** and **CON-6**
+- avoids code changes across environments
+
+### Alternative B — Environment-specific build artifacts
+Separate builds/images per environment.
+
+**Cons**
+- conflicts with **QA-7**
+- increases technical debt
+- complicates delivery pipeline
+
+### Alternative C — Dedicated runtime configuration service
+A central config service supplies runtime settings.
+
+**Pros**
+- can support QA-7
+
+**Cons**
+- adds operational complexity beyond what is necessary for this iteration
+
+### Selected concept
+**Alternative A — Externalized environment configuration with pipeline-driven deployment**
+
+### Rationale
+This best satisfies **QA-7**, **CRN-5**, **CON-3**, and **CON-6** with the least added complexity. It also fits the delivery timeline better than introducing an additional configuration platform.
+
+---
+
+## 4.3 Testability structure
+
+### Alternative A — Contract-based service boundaries with test doubles for external dependencies
+Each architectural element is tested through its interfaces using stubs/doubles for its collaborators and all external systems.
+
+**Pros**
+- strongest fit for **QA-9**
+- supports parallel development
+- reduces coordination bottlenecks
+
+### Alternative B — Shared integration environment for most tests
+Use mostly deployed dependencies and only stub third-party systems.
+
+**Cons**
+- does not fully satisfy independent integration testing
+- creates environment contention
+
+### Alternative C — End-to-end dominant testing
+Rely mostly on full deployed-system tests.
+
+**Cons**
+- weak fit for **QA-9**
+- slower feedback
+- higher late-defect risk
+
+### Selected concept
+**Alternative A — Contract-based service boundaries with test doubles for external dependencies**
+
+### Rationale
+This is the only option that directly matches **QA-9**. It also supports **CRN-3** and **CON-4** by letting teams work and validate modules independently.
+
+---
+
+## 4.4 Work allocation strategy
+
+### Alternative A — Ownership by architectural modules with MVP-first sequencing
+Assign teams/groups to stable modules already identified in prior iterations; prioritize modules required for HPS-1/HPS-2/HPS-3 in the MVP.
+
+### Alternative B — Ownership by technical layers
+Frontend team, backend team, data team, etc.
+
+### Alternative C — Ownership by use-case streams
+Teams organized by business flow.
+
+### Selected concept
+**Alternative A — Ownership by architectural modules with MVP-first sequencing**
+
+### Rationale
+This best aligns with **CRN-3** and reduces handoff overhead versus layer-based organization. It fits the architecture already created and best supports the 2-month MVP under **CON-4**.
+
+---
+
+## Step 5 — Instantiate Architectural Elements, Allocate Responsibilities, and Define Interfaces
+
+# Refined development and operations architecture
+
+## 5.1 API-layer refinement for protocol isolation
+
+### Inbound Protocol Adapters
+Each core capability exposes a transport-neutral application interface and one or more protocol adapters.
+
+#### REST Adapter Set
+**Responsibilities**
+- expose current REST endpoints
+- map HTTP requests/responses to transport-neutral application requests/responses
+- remain thin
+
+#### gRPC Adapter Set (future)
+**Responsibilities**
+- expose future gRPC endpoints
+- map gRPC requests/responses to the same transport-neutral application interfaces
+- require no core changes when added
+
+### Application Service Interfaces
+These are stable internal interfaces beneath adapters:
+
+- **Authentication Application Service**
+- **Pricing Command Application Service**
+- **Price Query Application Service**
+- **Hotel Administration Application Service**
+- **Rate Administration Application Service**
+- **User Access Administration Application Service**
+- **Publication Status / Monitoring Application Service** (if exposed later)
+
+These interfaces call the already-defined domain/service internals from prior iterations.
+
+---
+
+## 5.2 Deployment and CI/CD refinement
+
+### Source Control and Pipeline Boundary
+**Responsibilities**
+- host code in the company’s proprietary Git-based platform (**CON-3**)
+- trigger build, test, package, and deployment stages
+- manage environment promotion
+
+### Immutable Build Artifacts
+**Responsibilities**
+- produce one build artifact per version
+- use the same artifact across dev/test/staging nonproduction environments
+- prevent code changes or rebuild differences between those environments
+
+### Externalized Configuration
+**Responsibilities**
+- keep environment-specific values outside application code
+- inject values during deployment
+- include:
+  - service endpoints
+  - credentials/secrets references
+  - Kafka connection settings
+  - cloud resource identifiers
+  - feature flags if needed for MVP sequencing
+
+### Deployment Templates
+**Responsibilities**
+- define cloud deployment shape without embedding environment-specific code
+- ensure repeatable deployments across environments
+
+### Pipeline Stages
+1. Commit to Git platform
+2. Build
+3. Unit tests
+4. Contract/integration tests with doubles
+5. Package immutable artifacts
+6. Deploy to MVP/nonproduction environment
+7. Automated smoke/integration checks
+8. Promote same artifact to next nonproduction environment
+
+---
+
+## 5.3 Testing-boundary refinement
+
+Each major element gets a defined integration-test boundary.
+
+### Angular Web UI
+**Independent integration test approach**
+- test against API adapter contracts
+- backend replaced with API simulators/doubles
+
+### API Adapters
+**Independent integration test approach**
+- test inbound REST adapter against application service doubles
+- future gRPC adapter tested similarly
+- verify mapping only, not domain logic duplication
+
+### Application Services / Domain Services
+**Independent integration test approach**
+- test each service against doubles/stubs for:
+  - other services
+  - repositories
+  - Kafka
+  - cloud identity service
+  - CMS
+
+### Identity and Authorization Integration
+**Independent integration test approach**
+- test against a cloud identity service double
+- test permission repository with isolated test store
+
+### Pricing Service
+**Independent integration test approach**
+- test calculation/orchestration with:
+  - admin metadata doubles
+  - authorization double
+  - repository double
+  - query projection double
+  - outbox double
+
+### Query Service
+**Independent integration test approach**
+- test resolver/repository with query store double
+- test authorization dependency through contract stub
+
+### Hotel and Rate Administration Service
+**Independent integration test approach**
+- test hotel/rate management against its data-store double
+- test published rule access contract for Pricing Service
+
+### User Access Administration Service
+**Independent integration test approach**
+- test permission management with permission-store double
+- identity admin adapter tested with identity-service double
+
+### Publication and Integration Service
+**Independent integration test approach**
+- Kafka double
+- CMS double
+- delivery tracker isolated test store
+- reconciliation worker against synthetic state datasets
+
+### CI test enforcement
+Every service boundary must have:
+- contract tests,
+- adapter integration tests,
+- service integration tests with doubles,
+- smoke tests in deployed nonproduction environments.
+
+---
+
+## 5.4 Work allocation / module ownership
+
+To satisfy **CRN-3**, I define explicit ownership groups.
+
+### G
+... [truncated, original length=34080]
+--- END architect_agent ---
+  [Extracted 5 Mermaid diagram(s)]
+<<< ITERATION 4 END >>>
+
+================================================================================
+SESSION SUMMARY
+Ended           : 2026-06-11T09:56:28.492+08:00
+Duration        : 15 min 38 sec
+Human Turns     : 8
+Token Consumed  : 0.0 K tokens
+================================================================================

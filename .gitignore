@@ -2,8 +2,8 @@
 target/
 
 # Logs
-logs/
-*.log
+# logs/
+# *.log
 
 # IDE
 .idea/
