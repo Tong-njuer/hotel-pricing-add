@@ -1,0 +1,39 @@
+flowchart TB
+    subgraph TeamA[Group A - Experience and Access Team]
+        A1[Angular Web UI]
+        A2[REST Auth Adapter]
+        A3[Authentication Application Service]
+    end
+
+    subgraph TeamB[Group B - Pricing and Query Core Team]
+        B1[Pricing Command Application Service]
+        B2[Price Query Application Service]
+        B3[Pricing Service]
+        B4[Query Service]
+        B5[Query Read Store Contracts]
+    end
+
+    subgraph TeamC[Group C - Administration Team]
+        C1[Hotel Administration Application Service]
+        C2[Rate Administration Application Service]
+        C3[User Access Administration Application Service]
+        C4[Hotel and Rate Administration Service]
+        C5[User Access Administration Service]
+    end
+
+    subgraph TeamD[Group D - Integration and Reliability Team]
+        D1[Publication Outbox and Publisher Interfaces]
+        D2[Kafka Integration Boundaries]
+        D3[Publication and Integration Service]
+        D4[CMS Adapter]
+        D5[Delivery Tracker and Reconciliation]
+    end
+
+    subgraph TeamE[Group E - Platform and DevOps Team]
+        E1[Git Platform Pipeline]
+        E2[Deployment Templates]
+        E3[Environment Configuration]
+        E4[Test Infrastructure]
+        E5[Cloud Deployment Automation]
+        E6[Operational Monitoring Integration]
+    end

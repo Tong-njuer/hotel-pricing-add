@@ -1,0 +1,52 @@
+flowchart TB
+    subgraph git[Proprietary Git-Based Platform]
+        repo[Source Code Repositories]
+        pipeline[CI/CD Pipeline]
+    end
+
+    subgraph cloud[Cloud Environment]
+        lb[Load Balancer / Ingress]
+
+        subgraph runtime[Containerized Runtime]
+            webc[Angular Web UI Container]
+            edgec[API Edge Container]
+            authc[Identity and Authorization Container]
+            pricingc[Pricing Service Container]
+            queryc[Query Service Container]
+            adminc[Admin Services Container]
+            pubc[Publication and Integration Container]
+            kafkac[Kafka]
+        end
+
+        subgraph managed[Managed Data Services]
+            pstore[(Pricing Data Store)]
+            qstore[(Query Read Store)]
+            astore[(Administration Data Store)]
+            ustore[(Authorization / Permissions Store)]
+        end
+    end
+
+    cis[Cloud Identity Service]
+    cms[Channel Management System]
+
+    repo --> pipeline
+    pipeline --> webc
+    pipeline --> edgec
+    pipeline --> authc
+    pipeline --> pricingc
+    pipeline --> queryc
+    pipeline --> adminc
+    pipeline --> pubc
+
+    lb --> webc
+    lb --> edgec
+
+    authc --> cis
+    pubc --> cms
+
+    pricingc --> pstore
+    queryc --> qstore
+    adminc --> astore
+    authc --> ustore
+    pricingc --> kafkac
+    pubc --> kafkac

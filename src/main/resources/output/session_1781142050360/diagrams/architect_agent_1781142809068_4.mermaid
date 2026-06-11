@@ -1,0 +1,39 @@
+flowchart TB
+    subgraph Runtime[Runtime Components]
+        ORCH[Price Change Orchestrator]
+        OUTBOX[(Publication Outbox)]
+        OPUB[Outbox Publisher]
+        KAFKA[Kafka]
+        CON[Price Publication Consumer]
+        CMSAD[CMS Adapter]
+        TRACK[(Delivery Tracker)]
+        RECON[Reconciliation Worker]
+        QS[Query Service Replicas]
+        QDB[(HA Query Read Store)]
+        EDGE[API Edge]
+    end
+
+    subgraph Monitoring[Monitoring Architecture]
+        CORR[Correlation ID Propagation]
+        PMET[Publication Metrics Collector]
+        HPROBE[Health and SLA Probes]
+        DASH[Operational Monitoring Store / Dashboard]
+    end
+
+    ORCH --> CORR
+    OUTBOX --> PMET
+    OPUB --> PMET
+    KAFKA --> PMET
+    CON --> PMET
+    CMSAD --> PMET
+    TRACK --> PMET
+    RECON --> PMET
+
+    EDGE --> HPROBE
+    QS --> HPROBE
+    QDB --> HPROBE
+    CMSAD --> HPROBE
+
+    CORR --> DASH
+    PMET --> DASH
+    HPROBE --> DASH

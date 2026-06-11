@@ -1,0 +1,57 @@
+flowchart TB
+    subgraph UIBoundary[UI Test Boundary]
+        UI[Angular Web UI]
+        APIDOUBLE[API Adapter Doubles]
+        UI --> APIDOUBLE
+    end
+
+    subgraph APIBoundary[Inbound Adapter Test Boundary]
+        RESTAD[REST Adapters]
+        APPDOUBLE[Application Service Doubles]
+        RESTAD --> APPDOUBLE
+    end
+
+    subgraph PricingBoundary[Pricing Service Test Boundary]
+        PRICE[Pricing Service]
+        AUTHD[Authorization Double]
+        ADMIND[Admin Metadata Double]
+        QPROJD[Query Projection Double]
+        OUTBOXD[Outbox Double]
+        PRICE --> AUTHD
+        PRICE --> ADMIND
+        PRICE --> QPROJD
+        PRICE --> OUTBOXD
+    end
+
+    subgraph QueryBoundary[Query Service Test Boundary]
+        QUERY[Query Service]
+        QSTORED[Query Read Store Double]
+        AUTHQ[Authorization Double]
+        QUERY --> QSTORED
+        QUERY --> AUTHQ
+    end
+
+    subgraph AdminBoundary[Administration Services Test Boundary]
+        ADMIN[Hotel/Rate Admin Service]
+        USERACC[User Access Admin Service]
+        ASTORED[Admin Store Double]
+        PSTORED[Permission Store Double]
+        ADMIN --> ASTORED
+        USERACC --> PSTORED
+    end
+
+    subgraph IntegrationBoundary[Publication and Integration Test Boundary]
+        PUB[Publication and Integration Service]
+        KDOUBLE[Kafka Double]
+        CMSDOUBLE[CMS Double]
+        TRACKDOUBLE[Delivery Tracker Test Store]
+        PUB --> KDOUBLE
+        PUB --> CMSDOUBLE
+        PUB --> TRACKDOUBLE
+    end
+
+    subgraph AuthBoundary[Identity Integration Test Boundary]
+        AUTHI[Identity and Authorization Integration]
+        IDDOUBLE[Cloud Identity Service Double]
+        AUTHI --> IDDOUBLE
+    end

@@ -1,0 +1,76 @@
+flowchart TB
+    subgraph Clients[Clients]
+        BROWSER[Browser / Angular Web UI]
+        APIREST[REST API Clients]
+        APIGRPC[Future gRPC Clients]
+    end
+
+    subgraph InboundAdapters[Inbound Protocol Adapters]
+        RESTAUTH[REST Auth Adapter]
+        RESTPRICE[REST Pricing Adapter]
+        RESTQUERY[REST Query Adapter]
+        RESTADMIN[REST Admin Adapter]
+        RESTUSER[REST User Access Adapter]
+
+        GRPCAUTH[Future gRPC Auth Adapter]
+        GRPCPRICE[Future gRPC Pricing Adapter]
+        GRPCQUERY[Future gRPC Query Adapter]
+        GRPCADMIN[Future gRPC Admin Adapter]
+        GRPCUSER[Future gRPC User Access Adapter]
+    end
+
+    subgraph AppServices[Transport-Neutral Application Service Interfaces]
+        AUTHAPP[Authentication Application Service]
+        PRICEAPP[Pricing Command Application Service]
+        QUERYAPP[Price Query Application Service]
+        HOTELAPP[Hotel Administration Application Service]
+        RATEAPP[Rate Administration Application Service]
+        USERAPP[User Access Administration Application Service]
+    end
+
+    subgraph Core[Core Services from Prior Iterations]
+        AUTHCORE[Identity and Authorization Integration]
+        PRICECORE[Pricing Service]
+        QUERYCORE[Query Service]
+        ADMINCORE[Hotel and Rate Administration Service]
+        USERCORE[User Access Administration Service]
+    end
+
+    BROWSER --> RESTAUTH
+    BROWSER --> RESTPRICE
+    BROWSER --> RESTQUERY
+    BROWSER --> RESTADMIN
+    BROWSER --> RESTUSER
+
+    APIREST --> RESTAUTH
+    APIREST --> RESTPRICE
+    APIREST --> RESTQUERY
+    APIREST --> RESTADMIN
+    APIREST --> RESTUSER
+
+    APIGRPC --> GRPCAUTH
+    APIGRPC --> GRPCPRICE
+    APIGRPC --> GRPCQUERY
+    APIGRPC --> GRPCADMIN
+    APIGRPC --> GRPCUSER
+
+    RESTAUTH --> AUTHAPP
+    RESTPRICE --> PRICEAPP
+    RESTQUERY --> QUERYAPP
+    RESTADMIN --> HOTELAPP
+    RESTADMIN --> RATEAPP
+    RESTUSER --> USERAPP
+
+    GRPCAUTH --> AUTHAPP
+    GRPCPRICE --> PRICEAPP
+    GRPCQUERY --> QUERYAPP
+    GRPCADMIN --> HOTELAPP
+    GRPCADMIN --> RATEAPP
+    GRPCUSER --> USERAPP
+
+    AUTHAPP --> AUTHCORE
+    PRICEAPP --> PRICECORE
+    QUERYAPP --> QUERYCORE
+    HOTELAPP --> ADMINCORE
+    RATEAPP --> ADMINCORE
+    USERAPP --> USERCORE

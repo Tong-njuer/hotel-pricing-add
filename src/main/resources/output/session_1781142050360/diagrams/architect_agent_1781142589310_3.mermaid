@@ -1,0 +1,25 @@
+sequenceDiagram
+    actor C as User or External Consumer
+    participant UI as Angular Web UI / API Client
+    participant EDGE as API Edge
+    participant AUTH as Authorization Policy Service
+    participant QAPI as Query API
+    participant QRES as Query Resolver
+    participant QREP as Query Repository
+    participant QREAD as Query Read Store
+
+    C->>UI: Request prices for hotel/date
+    UI->>EDGE: Query prices
+    EDGE->>AUTH: Validate token and route access
+    AUTH-->>EDGE: Allowed
+    EDGE->>QAPI: Forward query
+    QAPI->>AUTH: Validate hotel-level permission
+    AUTH-->>QAPI: Authorized
+    QAPI->>QRES: Resolve prices
+    QRES->>QREP: Load current published prices
+    QREP->>QREAD: Read prices
+    QREAD-->>QREP: Price data
+    QREP-->>QRES: Price data
+    QRES-->>QAPI: Query result
+    QAPI-->>EDGE: Response
+    EDGE-->>UI: Prices returned

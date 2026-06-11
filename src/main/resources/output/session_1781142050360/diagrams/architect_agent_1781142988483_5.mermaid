@@ -1,0 +1,23 @@
+flowchart LR
+    subgraph MVP[2-Month MVP]
+        M1[HPS-1 Log In]
+        M2[HPS-2 Change Prices with Simulation]
+        M3[HPS-3 Query Prices]
+        M4[Baseline CI/CD]
+        M5[Baseline Test Harnesses]
+        M6[Baseline Cloud Deployment Templates]
+    end
+
+    subgraph Release[By 6-Month Initial Release]
+        R1[HPS-4 Manage Hotels]
+        R2[HPS-5 Manage Rates]
+        R3[HPS-6 Manage Users]
+        R4[Expanded Monitoring and Ops Maturity]
+        R5[Future gRPC Adapter]
+    end
+
+    M1 --> R1
+    M2 --> R2
+    M3 --> R3
+    M4 --> R4
+    M5 --> R5

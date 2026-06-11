@@ -1,0 +1,35 @@
+sequenceDiagram
+    participant ORCH as Price Change Orchestrator
+    participant OUT as Publication Outbox
+    participant OPUB as Outbox Publisher
+    participant K as Kafka
+    participant CON as Price Publication Consumer
+    participant CMSA as CMS Adapter
+    participant CMS as Channel Management System
+    participant DT as Delivery Tracker
+    participant REC as Reconciliation Worker
+
+    ORCH->>OUT: Create outbox record with correlation ID
+    OUT-->>OPUB: Pending publication
+    OPUB->>K: Publish event
+    OPUB->>DT: Record KAFKA_PUBLISHED
+    K-->>CON: Deliver event
+    CON->>DT: Record CONSUMER_RECEIVED
+    CON->>CMSA: Send publication
+    CMSA->>DT: Record CMS_SEND_ATTEMPTED
+
+    alt CMS available
+        CMSA->>CMS: REST push updated prices
+        CMS-->>CMSA: ACK
+        CMSA->>DT: Record CMS_ACK_RECEIVED
+        CMSA->>DT: Record COMPLETED
+    else CMS unavailable
+        CMSA->>DT: Record FAILED_RETRYABLE
+        CMSA-->>CON: Failure
+        loop Retry until circuit breaker opens or success
+            CON->>CMSA: Retry send
+            CMSA->>DT: Record CMS_SEND_ATTEMPTED
+        end
+        REC->>DT: Detect stuck delivery
+        REC->>K: Re-drive publication
+    end

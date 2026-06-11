@@ -1,0 +1,20 @@
+sequenceDiagram
+    actor U as User
+    participant UI as Angular Web UI
+    participant EDGE as API Edge
+    participant AUTHN as Authentication Adapter
+    participant AUTHZ as Authorization Policy Service
+    participant CIS as Cloud Identity Service
+    participant PREPO as Permission Repository
+
+    U->>UI: Enter credentials
+    UI->>EDGE: Login request
+    EDGE->>AUTHN: Authenticate
+    AUTHN->>CIS: Validate credentials / token
+    CIS-->>AUTHN: Identity result
+    AUTHN-->>EDGE: Authenticated identity
+    EDGE->>AUTHZ: Load function/hotel authorization context
+    AUTHZ->>PREPO: Retrieve permissions
+    PREPO-->>AUTHZ: Permissions
+    AUTHZ-->>EDGE: Authorization context
+    EDGE-->>UI: Login success with allowed functions/hotel scope

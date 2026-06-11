@@ -1,0 +1,37 @@
+flowchart TB
+    subgraph PricingSide[Pricing Side]
+        ORCH[Price Change Orchestrator]
+        OUTBOX[(Publication Outbox)]
+        OPUB[Outbox Publisher]
+    end
+
+    subgraph EventBackbone[Event Backbone]
+        KAFKA[Kafka / Event Backbone]
+    end
+
+    subgraph PublicationSide[Publication and Integration Service]
+        CONSUMER[Price Publication Consumer]
+        TRACKER[(Delivery Tracker)]
+        RECON[Reconciliation Worker]
+        CMSAD[CMS Adapter]
+        BREAKER[Circuit Breaker]
+        RETRY[Retry Policy]
+    end
+
+    CMS[Channel Management System]
+
+    ORCH -->|create durable publication intent| OUTBOX
+    OPUB -->|read pending entries| OUTBOX
+    OPUB -->|retry publish| KAFKA
+    KAFKA -->|deliver event| CONSUMER
+
+    CONSUMER -->|record CONSUMER_RECEIVED| TRACKER
+    CONSUMER --> CMSAD
+    CMSAD --> RETRY
+    RETRY --> BREAKER
+    BREAKER -->|REST call| CMS
+
+    CMSAD -->|record send/ack/failure| TRACKER
+    RECON -->|detect gaps/stuck work| OUTBOX
+    RECON -->|compare/repair lifecycle| TRACKER
+    RECON -->|re-drive publication| KAFKA

@@ -1,0 +1,60 @@
+flowchart TB
+    UI[Angular Web UI]
+    EDGE[API Edge]
+
+    subgraph AUTH[Identity and Authorization Integration]
+        APOL[Authorization Policy Service]
+        AAUTH[Authentication Adapter]
+        PREPO[(Permission Repository)]
+    end
+
+    subgraph PRICING[Pricing Service]
+        PCMD[Pricing Command API]
+        SIM[Simulation Service]
+        ORCH[Price Change Orchestrator]
+        CALC[Calculation Engine]
+        PREP[(Pricing Repository)]
+        QPROJ[Query Projection Writer]
+        OUTBOX[(Publication Outbox)]
+        OPUB[Outbox Publisher]
+    end
+
+    subgraph QUERY[Query Service]
+        QREAD[(Query Read Store)]
+    end
+
+    KAFKA[Kafka / Event Backbone]
+
+    subgraph PUBINT[Publication and Integration Service]
+        CONSUMER[Price Publication Consumer]
+        CMSAD[CMS Adapter]
+        DTRACK[Delivery Tracker]
+    end
+
+    CMS[Channel Management System]
+    ADATA[(Administration Data Store)]
+
+    UI --> EDGE
+    EDGE --> PCMD
+    EDGE --> APOL
+
+    PCMD --> APOL
+    PCMD --> SIM
+    PCMD --> ORCH
+
+    SIM --> CALC
+    ORCH --> CALC
+    CALC --> ADATA
+    ORCH --> PREP
+    ORCH --> QPROJ
+    QPROJ --> QREAD
+    ORCH --> OUTBOX
+    OPUB --> OUTBOX
+    OPUB --> KAFKA
+
+    KAFKA --> CONSUMER
+    CONSUMER --> CMSAD
+    CMSAD --> CMS
+    CONSUMER --> DTRACK
+
+    APOL --> PREPO

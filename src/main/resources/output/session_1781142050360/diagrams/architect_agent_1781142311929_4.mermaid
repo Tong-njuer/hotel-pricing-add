@@ -1,0 +1,32 @@
+sequenceDiagram
+    actor U as User
+    participant UI as Angular Web UI
+    participant EDGE as API Edge
+    participant AUTH as Identity and Authorization Integration
+    participant CIS as Cloud Identity Service
+    participant PR as Pricing Service
+    participant PS as Pricing Data Store
+    participant K as Kafka / Event Backbone
+    participant PUB as Publication and Integration Service
+    participant CMS as Channel Management System
+    participant QS as Query Read Store
+
+    U->>UI: Log in
+    UI->>EDGE: Login request
+    EDGE->>AUTH: Authenticate
+    AUTH->>CIS: Validate credentials / identity
+    CIS-->>AUTH: Auth result
+    AUTH-->>EDGE: User identity + authorization context
+    EDGE-->>UI: Login success
+
+    U->>UI: Change base rate for hotel/date
+    UI->>EDGE: Price change request
+    EDGE->>PR: Change price
+    PR->>AUTH: Validate permissions for hotel/function
+    AUTH-->>PR: Authorized
+    PR->>PS: Persist pricing changes
+    PR->>QS: Make prices available for query
+    PR->>K: Publish pricing event
+    K-->>PUB: Pricing event
+    PUB->>CMS: Push updated prices
+    CMS-->>PUB: Acknowledgement

@@ -1,0 +1,48 @@
+flowchart TB
+    subgraph clients[Clients and External Systems]
+        web[Angular Web UI]
+        external[External Query Consumer]
+        cis[Cloud Identity Service]
+        cms[Channel Management System]
+    end
+
+    subgraph hps[Hotel Pricing System]
+        edge[API Edge]
+        auth[Identity and Authorization Integration]
+        pricing[Pricing Service]
+        query[Query Service]
+        adminsvc[Hotel and Rate Administration Service]
+        usersvc[User Access Administration Service]
+        pub[Publication and Integration Service]
+        kafka[Kafka / Event Backbone]
+
+        pstore[(Pricing Data Store)]
+        qstore[(Query Read Store)]
+        astore[(Administration Data Store)]
+        ustore[(Authorization / Permissions Store)]
+    end
+
+    web -->|HTTPS/REST| edge
+    external -->|HTTPS/REST| edge
+
+    edge -->|Auth requests / token validation| auth
+    auth -->|Authenticate / identity info| cis
+
+    edge -->|Change prices / simulate| pricing
+    edge -->|Query prices| query
+    edge -->|Manage hotels/rates| adminsvc
+    edge -->|Manage users| usersvc
+
+    pricing -->|Authorization check| auth
+    query -->|Authorization check| auth
+    adminsvc -->|Authorization check| auth
+    usersvc -->|Authorization check| auth
+
+    pricing --> pstore
+    query --> qstore
+    adminsvc --> astore
+    usersvc --> ustore
+
+    pricing -->|Publish pricing events| kafka
+    kafka -->|Consume events| pub
+    pub -->|Push updated prices via REST| cms

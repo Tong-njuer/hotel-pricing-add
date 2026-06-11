@@ -1,0 +1,51 @@
+sequenceDiagram
+    actor U as User
+    participant UI as Angular Web UI
+    participant EDGE as API Edge
+    participant AUTH as Authorization Policy Service
+    participant PCMD as Pricing Command API
+    participant SIM as Simulation Service
+    participant ORCH as Price Change Orchestrator
+    participant CALC as Calculation Engine
+    participant PREP as Pricing Repository
+    participant QPROJ as Query Projection Writer
+    participant OUT as Publication Outbox
+    participant OPUB as Outbox Publisher
+    participant K as Kafka
+    participant CON as Price Publication Consumer
+    participant CMS as Channel Management System
+
+    U->>UI: Select hotel/dates and enter price change
+    UI->>EDGE: Submit simulate or commit request
+    EDGE->>AUTH: Coarse-grained function check
+    AUTH-->>EDGE: Allowed
+
+    EDGE->>PCMD: Forward request
+    PCMD->>AUTH: Fine-grained hotel/function authorization
+    AUTH-->>PCMD: Authorized
+
+    alt Simulation request
+        PCMD->>SIM: Simulate change
+        SIM->>CALC: Calculate derived prices
+        CALC-->>SIM: Simulated prices
+        SIM-->>PCMD: Simulation result + rule version
+        PCMD-->>EDGE: Return simulation result
+        EDGE-->>UI: Show simulated prices
+    else Commit request
+        PCMD->>ORCH: Commit change
+        ORCH->>CALC: Calculate committed prices
+        CALC-->>ORCH: Final calculated prices
+        ORCH->>PREP: Persist authoritative prices
+        ORCH->>QPROJ: Update query-ready prices
+        ORCH->>OUT: Record durable publication event
+        ORCH-->>PCMD: Commit success
+        PCMD-->>EDGE: Success response
+        EDGE-->>UI: Price change accepted and query-ready
+
+        OPUB->>OUT: Read pending publication
+        OUT-->>OPUB: Pending event
+        OPUB->>K: Publish price change event
+        K-->>CON: Deliver event
+        CON->>CMS: Push updated prices
+        CMS-->>CON: Acknowledgement
+    end

@@ -1,0 +1,35 @@
+flowchart LR
+    DEV[Developer Commit]
+    GIT[Proprietary Git Platform]
+    BUILD[Build]
+    UNIT[Unit Tests]
+    CONTRACT[Contract and Adapter Tests]
+    INTEG[Service Integration Tests with Doubles]
+    PACKAGE[Package Immutable Artifacts]
+    DEPLOYDEV[Deploy to Nonprod Env A]
+    SMOKE1[Smoke and API Checks]
+    DEPLOYTEST[Promote Same Artifact to Nonprod Env B]
+    SMOKE2[Smoke and Integration Checks]
+    DEPLOYSTAGE[Promote Same Artifact to Nonprod Env C]
+    SMOKE3[Acceptance Checks]
+
+    CONFIG[Externalized Environment Configuration]
+
+    DEV --> GIT
+    GIT --> BUILD
+    BUILD --> UNIT
+    UNIT --> CONTRACT
+    CONTRACT --> INTEG
+    INTEG --> PACKAGE
+
+    PACKAGE --> DEPLOYDEV
+    CONFIG --> DEPLOYDEV
+    DEPLOYDEV --> SMOKE1
+
+    SMOKE1 --> DEPLOYTEST
+    CONFIG --> DEPLOYTEST
+    DEPLOYTEST --> SMOKE2
+
+    SMOKE2 --> DEPLOYSTAGE
+    CONFIG --> DEPLOYSTAGE
+    DEPLOYSTAGE --> SMOKE3

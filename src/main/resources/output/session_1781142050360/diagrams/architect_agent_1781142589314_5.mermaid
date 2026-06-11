@@ -1,0 +1,84 @@
+flowchart TB
+    subgraph CLIENTS[Clients]
+        UI[Angular Web UI]
+        EXT[External Query Consumer]
+    end
+
+    EDGE[API Edge]
+
+    subgraph SEC[Identity and Authorization Integration]
+        AUTHN[Authentication Adapter]
+        AUTHZ[Authorization Policy Service]
+        PERM[(Permission Repository)]
+    end
+
+    subgraph PR[Pricing Service]
+        PCMD[Pricing Command API]
+        SIM[Simulation Service]
+        ORCH[Price Change Orchestrator]
+        CALC[Calculation Engine]
+        PREP[(Pricing Repository)]
+        OUT[(Publication Outbox)]
+    end
+
+    subgraph QS[Query Service]
+        QAPI[Query API]
+        QRES[Query Resolver]
+        QREAD[(Query Read Store)]
+    end
+
+    subgraph ADM[Hotel and Rate Administration Service]
+        HM[Hotel Management Component]
+        RM[Rate Management Component]
+        ADATA[(Administration Data Store)]
+    end
+
+    subgraph UAM[User Access Administration Service]
+        UPM[User Permission Management Component]
+        IAA[Identity Administration Adapter]
+    end
+
+    subgraph PI[Publication and Integration Service]
+        CON[Price Publication Consumer]
+        CMSAD[CMS Adapter]
+        DTRK[Delivery Tracker]
+    end
+
+    K[Kafka / Event Backbone]
+    CIS[Cloud Identity Service]
+    CMS[Channel Management System]
+
+    UI --> EDGE
+    EXT --> EDGE
+
+    EDGE --> AUTHN
+    EDGE --> AUTHZ
+    EDGE --> PCMD
+    EDGE --> QAPI
+    EDGE --> HM
+    EDGE --> RM
+    EDGE --> UPM
+
+    AUTHN --> CIS
+    AUTHZ --> PERM
+
+    PCMD --> SIM
+    PCMD --> ORCH
+    SIM --> CALC
+    ORCH --> CALC
+    CALC --> ADATA
+    ORCH --> PREP
+    ORCH --> QREAD
+    ORCH --> OUT
+
+    QAPI --> QRES
+    QRES --> QREAD
+
+    UPM --> IAA
+    IAA --> CIS
+
+    OUT --> K
+    K --> CON
+    CON --> CMSAD
+    CMSAD --> CMS
+    CON --> DTRK

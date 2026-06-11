@@ -1,0 +1,16 @@
+flowchart TB
+    commercial[Commercial User]
+    admin[Administrator]
+    external[External Price Query Consumer]
+    cms[Channel Management System]
+    cis[Cloud Identity Service]
+
+    subgraph hps[Hotel Pricing System]
+        system[Hotel Pricing System]
+    end
+
+    commercial -->|Uses via web browser| system
+    admin -->|Uses via web browser| system
+    external -->|Queries prices via REST API| system
+    system -->|Authenticates users| cis
+    system -->|Publishes updated prices| cms

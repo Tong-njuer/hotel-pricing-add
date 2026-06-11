@@ -1,0 +1,59 @@
+flowchart TB
+    subgraph Cloud[Cloud Environment]
+        subgraph EdgeTier[Edge Tier]
+            LB[Load Balancer / API Edge]
+        end
+
+        subgraph QueryTier[Query Tier]
+            Q1[Query Service Replica 1]
+            Q2[Query Service Replica 2]
+            Q3[Query Service Replica 3]
+        end
+
+        subgraph QueryData[Query Data]
+            QDB[(HA Query Read Store)]
+        end
+
+        subgraph PricingTier[Pricing and Publication]
+            ORCH[Pricing Service]
+            OPUB1[Outbox Publisher A]
+            OPUB2[Outbox Publisher B]
+            KAFKA[Kafka]
+            CON1[Publication Consumer A]
+            CON2[Publication Consumer B]
+            RECON[Reconciliation Worker]
+            TRACK[(Delivery Tracker)]
+            OUTBOX[(Publication Outbox)]
+            CMSAD1[CMS Adapter A]
+            CMSAD2[CMS Adapter B]
+        end
+    end
+
+    CMS[Channel Management System]
+
+    LB --> Q1
+    LB --> Q2
+    LB --> Q3
+
+    Q1 --> QDB
+    Q2 --> QDB
+    Q3 --> QDB
+
+    ORCH --> OUTBOX
+    OPUB1 --> OUTBOX
+    OPUB2 --> OUTBOX
+    OPUB1 --> KAFKA
+    OPUB2 --> KAFKA
+
+    KAFKA --> CON1
+    KAFKA --> CON2
+    CON1 --> TRACK
+    CON2 --> TRACK
+    CON1 --> CMSAD1
+    CON2 --> CMSAD2
+    CMSAD1 --> CMS
+    CMSAD2 --> CMS
+
+    RECON --> OUTBOX
+    RECON --> TRACK
+    RECON --> KAFKA
